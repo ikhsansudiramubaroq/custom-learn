@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import Composer from '@/components/Composer'
 import ConfirmButton from '@/components/ConfirmButton'
 import { CATEGORY_LABELS, getTutorialForEdit } from '@/lib/content'
 import { requireAdmin } from '@/lib/session'
@@ -139,6 +140,7 @@ export default async function EditTutorialPage({ params }) {
             </div>
           </form>
           {section.blocks.map((block) => <BlockForm key={block.id} block={block} />)}
+          <Composer sectionId={section.id} />
         </section>
       ))}
 

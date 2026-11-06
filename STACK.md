@@ -25,6 +25,7 @@ custom-learn/
 │   ├── layout.js                  navigasi atas: Portfolio, Tutorial
 │   ├── globals.css
 │   ├── page.js                    Portfolio
+│   ├── not-found.js
 │   ├── tutorial/
 │   │   ├── page.js                daftar tutorial
 │   │   └── [slug]/page.js         isi tutorial
@@ -32,17 +33,22 @@ custom-learn/
 │   ├── api/upload/route.js        menerima foto dari paste atau pilih file
 │   └── studio/
 │       ├── login/page.js
+│       ├── layout.js
+│       ├── error.js
 │       ├── page.js                kelola tutorial
 │       ├── [id]/page.js           editor satu tutorial
 │       └── actions.js             Server Actions tulis data
 ├── components/
 │   ├── Sidebar.js
 │   ├── Block.js                   tampilan lima jenis blok
+│   ├── ConfirmButton.js           client component, konfirmasi hapus
 │   ├── CopyButton.js              client component
 │   └── Composer.js                client component, kotak paste
 ├── lib/
 │   ├── db.js                      pool koneksi
-│   ├── auth.js                    password, sesi, batas login
+│   ├── auth.js                    password, token sesi, batas login
+│   ├── session.js                 cookie sesi dan requireAdmin
+│   ├── uploads.js                 folder foto dan hapus file
 │   ├── content.js                 query tutorial dan portfolio
 │   ├── validate.js                cek file, URL, slug
 │   └── profile.js                 nama, bio, kontak
