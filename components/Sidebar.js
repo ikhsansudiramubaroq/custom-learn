@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { CATEGORY_LABELS } from '@/lib/content'
 
-function Contents({ tutorials, active }) {
+function Contents({ tutorials, active, activeSection }) {
   return Object.entries(CATEGORY_LABELS).map(([category, label]) => {
     const items = tutorials.filter((tutorial) => tutorial.category === category)
     if (!items.length) return null
@@ -13,19 +13,22 @@ function Contents({ tutorials, active }) {
             <li key={tutorial.id}>
               <Link
                 href={`/tutorial/${tutorial.slug}`}
-                aria-current={tutorial.id === active?.id ? 'page' : undefined}
+                aria-current={tutorial.id === active?.id ? 'true' : undefined}
               >
                 <span className="toc-number">{tutorial.number}</span>
                 {tutorial.title}
               </Link>
               {tutorial.id === active?.id && (
                 <ol className="toc-sections">
-                  {active.sections.map((section) => (
+                  {active.sections.map((section, index) => (
                     <li key={section.id}>
-                      <a href={`#s-${section.id}`}>
+                      <Link
+                        href={`/tutorial/${active.slug}/${index + 1}`}
+                        aria-current={section.id === activeSection?.id ? 'page' : undefined}
+                      >
                         <span className="toc-number">{section.number}</span>
                         {section.title}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ol>
@@ -39,15 +42,15 @@ function Contents({ tutorials, active }) {
 }
 
 // Dua salinan: HP memakai <details> supaya bisa dilipat tanpa JavaScript, CSS menampilkan salah satunya.
-export default function Sidebar({ tutorials, active }) {
+export default function Sidebar({ tutorials, active, activeSection }) {
   return (
     <>
       <details className="toc toc-mobile">
         <summary>Daftar isi</summary>
-        <Contents tutorials={tutorials} active={active} />
+        <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
       </details>
       <aside className="toc toc-desktop" aria-label="Daftar tutorial">
-        <Contents tutorials={tutorials} active={active} />
+        <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
       </aside>
     </>
   )

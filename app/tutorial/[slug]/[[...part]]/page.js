@@ -1,0 +1,75 @@
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import Block from '@/components/Block'
+import Sidebar from '@/components/Sidebar'
+import { getPublishedTutorial, getPublishedTutorials } from '@/lib/content'
+
+export const dynamic = 'force-dynamic'
+
+// Tanpa nomor berarti sub judul pertama, supaya link portfolio tetap pendek.
+async function load(params) {
+  const { slug, part } = await params
+  const tutorial = await getPublishedTutorial(slug)
+  if (!tutorial) return null
+  const index = part ? (part.length === 1 && /^[1-9]\d*$/.test(part[0]) ? Number(part[0]) - 1 : -1) : 0
+  const section = tutorial.sections[index]
+  return part && !section ? null : { tutorial, section, index }
+}
+
+export async function generateMetadata({ params }) {
+  const page = await load(params)
+  if (!page) return {}
+  const { tutorial, section, index } = page
+  return {
+    title: index > 0 ? `${section.number} ${section.title}: ${tutorial.title}` : tutorial.title,
+    description: tutorial.summary,
+  }
+}
+
+function PagerLink({ tutorial, index, label, className }) {
+  const section = tutorial.sections[index]
+  if (!section) return null
+  return (
+    <Link href={`/tutorial/${tutorial.slug}/${index + 1}`} className={className}>
+      <span>{label}</span>
+      {section.number} {section.title}
+    </Link>
+  )
+}
+
+export default async function TutorialPage({ params }) {
+  const page = await load(params)
+  if (!page) notFound()
+  const { tutorial, section, index } = page
+  const tutorials = await getPublishedTutorials()
+
+  return (
+    <div className="doc-layout">
+      <Sidebar tutorials={tutorials} active={tutorial} activeSection={section} />
+      <main className="doc">
+        <header className="doc-header">
+          <p className="doc-number">Tutorial {tutorial.number}</p>
+          <h1>{tutorial.title}</h1>
+          {index === 0 && tutorial.summary && <p className="doc-summary">{tutorial.summary}</p>}
+        </header>
+        {section && (
+          <section className="doc-section">
+            <h2>
+              <span className="section-number">{section.number}</span>
+              {section.title}
+            </h2>
+            <div className="section-body">
+              {section.blocks.map((block) => <Block key={block.id} block={block} />)}
+            </div>
+          </section>
+        )}
+        {tutorial.sections.length > 1 && (
+          <nav className="pager" aria-label="Sub judul">
+            <PagerLink tutorial={tutorial} index={index - 1} label="Sebelumnya" />
+            <PagerLink tutorial={tutorial} index={index + 1} label="Berikutnya" className="pager-next" />
+          </nav>
+        )}
+      </main>
+    </div>
+  )
+}

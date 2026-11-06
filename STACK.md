@@ -28,7 +28,7 @@ custom-learn/
 │   ├── not-found.js
 │   ├── tutorial/
 │   │   ├── page.js                daftar tutorial
-│   │   └── [slug]/page.js         isi tutorial
+│   │   └── [slug]/[[...part]]/page.js   satu sub judul per halaman
 │   ├── uploads/[name]/route.js    menyajikan foto
 │   ├── api/upload/route.js        menerima foto dari paste atau pilih file
 │   └── studio/

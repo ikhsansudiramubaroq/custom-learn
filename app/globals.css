@@ -11,10 +11,6 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-padding-top: 1.5rem;
-}
-
 body {
   margin: 0;
   background: var(--paper);
@@ -323,7 +319,8 @@ code {
 .toc a {
   display: grid;
   grid-template-columns: 2.5rem minmax(0, 1fr);
-  padding: 0.3rem 0;
+  margin-inline: -0.5rem;
+  padding: 0.3rem 0.5rem;
   color: var(--ink);
   text-decoration: none;
 }
@@ -332,13 +329,28 @@ code {
   text-decoration: underline;
 }
 
-.toc a[aria-current='page'] {
-  color: var(--accent);
+.toc a[aria-current='true'] {
+  background: var(--ink);
+  color: var(--paper);
   font-weight: 600;
 }
 
-.toc-sections {
-  margin-bottom: 0.5rem;
+.toc a[aria-current='true'] .toc-number {
+  color: var(--paper);
+}
+
+.toc a[aria-current='page'] {
+  box-shadow: inset 3px 0 0 var(--accent);
+  background: #e4dccb;
+  font-weight: 600;
+}
+
+.toc a[aria-current='page'] .toc-number {
+  color: var(--ink);
+}
+
+.toc .toc-sections {
+  margin: 0.25rem 0 0.5rem;
   font-size: 0.9375rem;
 }
 
@@ -348,6 +360,37 @@ code {
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5rem;
+}
+
+/* Sebelumnya dan berikutnya */
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2rem 0 0 4.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ink);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.pager a {
+  display: block;
+  min-height: 2.75rem;
+}
+
+.pager-next {
+  grid-column: 2;
+  text-align: right;
+}
+
+.pager span {
+  display: inline-block;
+  width: 100%;
+  color: var(--muted);
+  font-family: var(--sans-mono);
+  font-size: 0.75rem;
 }
 
 /* Daftar tutorial */
@@ -410,14 +453,14 @@ code {
   }
 
   .toc a {
-    padding: 0.5rem 0;
+    padding: 0.5rem;
   }
 
   .doc {
     padding: 1.5rem 1.25rem 4rem;
   }
 
-  .doc-header {
+  .doc-header, .pager {
     margin-left: 0;
   }
 

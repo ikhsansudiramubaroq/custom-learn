@@ -28,7 +28,9 @@ Portfolio dan Tutorial ada di web yang sama dan saling tertaut lewat navigasi at
 ## Tutorial
 
 - Sidebar kiri berisi daftar tutorial per kategori.
-- Tutorial yang dibuka menampilkan sub judulnya (1.1, 1.2, ...) di sidebar.
+- Tutorial yang dibuka menampilkan sub judulnya (1.1, 1.2, ...) di sidebar. Judul dan sub judul yang aktif diberi background.
+- Setiap sub judul punya halaman sendiri: `/tutorial/<slug>/2` untuk sub judul kedua. `/tutorial/<slug>` menampilkan sub judul pertama.
+- Di bawah halaman ada link ke sub judul sebelumnya dan berikutnya.
 - Isi sub judul adalah urutan blok: teks, foto, link, command, code.
 - Setiap tutorial punya URL sendiri yang bisa dibagikan.
 
