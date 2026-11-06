@@ -39,7 +39,7 @@ custom-learn/
 │       ├── [id]/page.js           editor satu tutorial
 │       └── actions.js             Server Actions tulis data
 ├── components/
-│   ├── Sidebar.js
+│   ├── TutorialSidebar.js
 │   ├── Block.js                   tampilan lima jenis blok
 │   ├── ConfirmButton.js           client component, konfirmasi hapus
 │   ├── CopyButton.js              client component

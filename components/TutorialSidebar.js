@@ -42,7 +42,7 @@ function Contents({ tutorials, active, activeSection }) {
 }
 
 // Dua salinan: HP memakai <details> supaya bisa dilipat tanpa JavaScript, CSS menampilkan salah satunya.
-export default function Sidebar({ tutorials, active, activeSection }) {
+export default function TutorialSidebar({ tutorials, active, activeSection }) {
   return (
     <>
       <details className="toc toc-mobile">

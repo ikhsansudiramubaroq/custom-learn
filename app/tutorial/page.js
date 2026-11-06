@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Sidebar from '@/components/Sidebar'
+import TutorialSidebar from '@/components/TutorialSidebar'
 import { getPublishedTutorials } from '@/lib/content'
 
 export const dynamic = 'force-dynamic'
@@ -9,7 +9,7 @@ export default async function TutorialsPage() {
   const tutorials = await getPublishedTutorials()
   return (
     <div className="doc-layout">
-      <Sidebar tutorials={tutorials} />
+      <TutorialSidebar tutorials={tutorials} />
       <main className="doc">
         <h1>Tutorial</h1>
         {tutorials.length === 0 && <p className="empty">Belum ada tutorial yang terbit.</p>}
