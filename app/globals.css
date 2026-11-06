@@ -949,3 +949,23 @@ kbd {
 .doc-summary, .index-list p {
   max-width: 42rem;
 }
+
+/* Notifikasi singkat */
+
+.flash {
+  position: fixed;
+  top: 4.25rem;
+  right: 1.25rem;
+  z-index: 10;
+  max-width: calc(100vw - 2.5rem);
+  padding: 0.5rem 0.875rem;
+  border-left: 4px solid var(--accent);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans-mono);
+  font-size: 0.8125rem;
+}
+
+.flash:empty {
+  display: none;
+}

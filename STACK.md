@@ -43,6 +43,7 @@ custom-learn/
 │   ├── Block.js                   tampilan lima jenis blok
 │   ├── ConfirmButton.js           client component, konfirmasi hapus
 │   ├── CopyButton.js              client component
+│   ├── Flash.js                   client component, notifikasi singkat Studio
 │   ├── MarkEditor.js              client component, seret kotak merah
 │   └── Composer.js                client component, kotak paste
 ├── lib/

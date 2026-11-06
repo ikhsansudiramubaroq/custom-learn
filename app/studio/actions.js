@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { CATEGORY_LABELS } from '@/lib/content'
 import { db } from '@/lib/db'
-import { logIn, logOut, requireAdmin } from '@/lib/session'
+import { logIn, logOut, requireAdmin, setFlash } from '@/lib/session'
 import { removeImages } from '@/lib/uploads'
 import { isHttpUrl, parseMarks, slugify } from '@/lib/validate'
 
@@ -50,10 +50,11 @@ async function move(table, scopeColumn, id, direction) {
   if (to < 0 || to >= ids.length) return
   ;[ids[from], ids[to]] = [ids[to], ids[from]]
   await Promise.all(ids.map((rowId, index) => db.execute(`UPDATE ${table} SET position = ? WHERE id = ?`, [index, rowId])))
-  refresh()
+  await refresh('Urutan diubah')
 }
 
-function refresh() {
+async function refresh(message) {
+  await setFlash(message)
   revalidatePath('/studio', 'layout')
 }
 
@@ -82,6 +83,7 @@ export async function createTutorial(formData) {
     'INSERT INTO tutorials (slug, title, category, position) VALUES (?, ?, ?, ?)',
     [slug, title, chosen, await nextPosition('tutorials', 'category', chosen)],
   )
+  await setFlash('Tutorial dibuat')
   redirect(`/studio/${result.insertId}`)
 }
 
@@ -106,7 +108,7 @@ export async function updateTutorial(id, formData) {
       id,
     ],
   )
-  refresh()
+  await refresh('Tutorial disimpan')
 }
 
 export async function deleteTutorial(id) {
@@ -118,7 +120,7 @@ export async function deleteTutorial(id) {
   )
   await db.execute('DELETE FROM tutorials WHERE id = ?', [id])
   await removeImages(images.map((image) => image.content))
-  refresh()
+  await refresh('Tutorial dihapus')
   redirect('/studio')
 }
 
@@ -133,13 +135,13 @@ export async function addSection(tutorialId, formData) {
     'INSERT INTO sections (tutorial_id, title, position) VALUES (?, ?, ?)',
     [tutorialId, required(formData, 'title', 200), await nextPosition('sections', 'tutorial_id', tutorialId)],
   )
-  refresh()
+  await refresh('Sub judul ditambahkan')
 }
 
 export async function updateSection(id, formData) {
   await requireAdmin()
   await db.execute('UPDATE sections SET title = ? WHERE id = ?', [required(formData, 'title', 200), id])
-  refresh()
+  await refresh('Sub judul disimpan')
 }
 
 export async function deleteSection(id) {
@@ -147,7 +149,7 @@ export async function deleteSection(id) {
   const [images] = await db.execute("SELECT content FROM blocks WHERE type = 'image' AND section_id = ?", [id])
   await db.execute('DELETE FROM sections WHERE id = ?', [id])
   await removeImages(images.map((image) => image.content))
-  refresh()
+  await refresh('Sub judul dihapus')
 }
 
 export async function moveSection(id, direction) {
@@ -163,7 +165,7 @@ export async function addBlock(sectionId, formData) {
     'INSERT INTO blocks (section_id, type, content, label, position) VALUES (?, ?, ?, ?, ?)',
     [sectionId, type, blockContent(type, formData), field(formData, 'label', 255), await nextPosition('blocks', 'section_id', sectionId)],
   )
-  refresh()
+  await refresh('Blok ditambahkan')
 }
 
 export async function updateBlock(id, formData) {
@@ -176,7 +178,7 @@ export async function updateBlock(id, formData) {
   } else {
     await db.execute('UPDATE blocks SET content = ?, label = ? WHERE id = ?', [blockContent(block.type, formData), label, id])
   }
-  refresh()
+  await refresh('Blok disimpan')
 }
 
 export async function updateMarks(id, value) {
@@ -184,7 +186,7 @@ export async function updateMarks(id, value) {
   const marks = parseMarks(value)
   if (!marks) throw new Error('Kotak tidak valid')
   await db.execute("UPDATE blocks SET marks = ? WHERE id = ? AND type = 'image'", [JSON.stringify(marks), id])
-  refresh()
+  await refresh('Kotak diperbarui')
 }
 
 export async function deleteBlock(id) {
@@ -193,7 +195,7 @@ export async function deleteBlock(id) {
   if (!block) return
   await db.execute('DELETE FROM blocks WHERE id = ?', [id])
   if (block.type === 'image') await removeImages([block.content])
-  refresh()
+  await refresh('Blok dihapus')
 }
 
 export async function moveBlock(id, direction) {
