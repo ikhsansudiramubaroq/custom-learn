@@ -1,6 +1,21 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { IMAGE_NAME, detectImageType, isHttpUrl, slugify } from '../lib/validate.js'
+import { IMAGE_NAME, MAX_MARKS, detectImageType, isHttpUrl, parseMarks, slugify } from '../lib/validate.js'
+
+test('kotak merah hanya menerima data yang benar', () => {
+  assert.deepEqual(parseMarks('[]'), [])
+  assert.deepEqual(parseMarks('[[10,20,30,40.5]]'), [[10, 20, 30, 40.5]])
+  assert.deepEqual(parseMarks('[[50,50,50,50]]'), [[50, 50, 50, 50]])
+  for (const bad of [
+    'bukan json', 'null', '{}', '[1,2,3,4]', '[[1,2,3]]', '[[1,2,3,4,5]]',
+    '[[-1,0,10,10]]', '[[0,0,0,10]]', '[[60,0,50,10]]', '[[0,60,10,50]]', '[["1",0,10,10]]', '[[1e999,0,10,10]]',
+  ]) {
+    assert.equal(parseMarks(bad), null, bad)
+  }
+  assert.equal(parseMarks(JSON.stringify(Array(MAX_MARKS + 1).fill([1, 1, 1, 1]))), null)
+  // Jumlah maksimal kotak dengan angka terpanjang harus muat di kolom VARCHAR(2000).
+  assert.ok(JSON.stringify(Array(MAX_MARKS).fill([99.99, 99.99, 99.99, 99.99])).length < 2000)
+})
 
 test('slug dari judul', () => {
   assert.equal(slugify('Instalasi Proxmox sebagai Web Server!'), 'instalasi-proxmox-sebagai-web-server')

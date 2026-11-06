@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS blocks (
   type ENUM('text', 'image', 'link', 'command', 'code') NOT NULL,
   content MEDIUMTEXT NOT NULL,
   label VARCHAR(255) NOT NULL DEFAULT '',
+  marks VARCHAR(2000) NOT NULL DEFAULT '[]',
   position INT NOT NULL DEFAULT 0,
   FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

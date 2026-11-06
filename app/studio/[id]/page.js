@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Composer from '@/components/Composer'
 import ConfirmButton from '@/components/ConfirmButton'
+import MarkEditor from '@/components/MarkEditor'
 import { CATEGORY_LABELS, getTutorialForEdit } from '@/lib/content'
 import { requireAdmin } from '@/lib/session'
 import {
@@ -30,7 +31,7 @@ function BlockForm({ block }) {
     <form action={updateBlock.bind(null, block.id)} className="block-form">
       <span className="meta">{BLOCK_LABELS[block.type]}</span>
       {block.type === 'image' ? (
-        <img src={`/uploads/${block.content}`} alt={block.label || 'Foto'} loading="lazy" />
+        <MarkEditor blockId={block.id} name={block.content} alt={block.label || 'Foto'} initialMarks={block.marks} />
       ) : (
         <textarea
           name="content"

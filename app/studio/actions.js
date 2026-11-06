@@ -6,7 +6,7 @@ import { CATEGORY_LABELS } from '@/lib/content'
 import { db } from '@/lib/db'
 import { logIn, logOut, requireAdmin } from '@/lib/session'
 import { removeImages } from '@/lib/uploads'
-import { isHttpUrl, slugify } from '@/lib/validate'
+import { isHttpUrl, parseMarks, slugify } from '@/lib/validate'
 
 // Setiap fungsi yang diekspor di sini bisa dipanggil langsung lewat HTTP,
 // jadi semuanya wajib memanggil requireAdmin() lebih dulu.
@@ -176,6 +176,14 @@ export async function updateBlock(id, formData) {
   } else {
     await db.execute('UPDATE blocks SET content = ?, label = ? WHERE id = ?', [blockContent(block.type, formData), label, id])
   }
+  refresh()
+}
+
+export async function updateMarks(id, value) {
+  await requireAdmin()
+  const marks = parseMarks(value)
+  if (!marks) throw new Error('Kotak tidak valid')
+  await db.execute("UPDATE blocks SET marks = ? WHERE id = ? AND type = 'image'", [JSON.stringify(marks), id])
   refresh()
 }
 

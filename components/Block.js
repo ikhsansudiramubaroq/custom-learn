@@ -1,3 +1,4 @@
+import { markStyle } from '@/lib/validate'
 import CopyButton from './CopyButton'
 
 export default function Block({ block }) {
@@ -8,7 +9,14 @@ export default function Block({ block }) {
   if (type === 'image') {
     return (
       <figure className="block-image">
-        <img src={`/uploads/${content}`} alt={label || 'Screenshot langkah ini'} loading="lazy" />
+        <div className="marked-image">
+          <img
+            src={`/uploads/${content}`}
+            alt={`${label || 'Screenshot langkah ini'}${block.marks.length ? ', dengan bagian penting ditandai kotak merah' : ''}`}
+            loading="lazy"
+          />
+          {block.marks.map((box) => <span key={box.join()} className="mark" style={markStyle(box)} />)}
+        </div>
         {label && <figcaption>{label}</figcaption>}
       </figure>
     )

@@ -8,6 +8,7 @@ Web catatan belajar Linux dan programming yang sekaligus menjadi portfolio. Seti
 - **Tutorial (`/tutorial`):** sidebar kiri berisi daftar tutorial dan sub judul 1.1, 1.2, dan seterusnya.
 - **Studio (`/studio`):** halaman admin satu akun untuk menulis tutorial.
 - **Paste langsung:** screenshot, command, code, dan link cukup di-paste.
+- **Kotak merah:** seret di foto untuk menandai bagian penting.
 - **Pengunjung hanya baca:** bisa melihat, membaca, dan menyalin. Command dan code punya tombol salin.
 
 ## Teknologi

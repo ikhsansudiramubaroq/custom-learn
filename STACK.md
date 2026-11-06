@@ -43,6 +43,7 @@ custom-learn/
 │   ├── Block.js                   tampilan lima jenis blok
 │   ├── ConfirmButton.js           client component, konfirmasi hapus
 │   ├── CopyButton.js              client component
+│   ├── MarkEditor.js              client component, seret kotak merah
 │   └── Composer.js                client component, kotak paste
 ├── lib/
 │   ├── db.js                      pool koneksi
@@ -95,6 +96,7 @@ CREATE TABLE blocks (
   type ENUM('text', 'image', 'link', 'command', 'code') NOT NULL,
   content MEDIUMTEXT NOT NULL,               -- teks, kode, URL, atau nama file foto
   label VARCHAR(255) NOT NULL DEFAULT '',    -- caption foto, teks link, atau bahasa kode
+  marks VARCHAR(2000) NOT NULL DEFAULT '[]', -- kotak merah pada foto
   position INT NOT NULL DEFAULT 0,
   FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -103,6 +105,7 @@ CREATE TABLE blocks (
 - Satu tabel `tutorials` melayani Tutorial dan Portfolio, jadi tidak ada data ganda.
 - Nomor 1.1, 1.2 dihitung dari urutan saat ditampilkan, jadi tetap benar setelah sub judul dipindah.
 - Tidak ada kolom sampul. Portfolio memakai foto pertama di tutorial.
+- Kotak merah disimpan sebagai JSON `[[kiri, atas, lebar, tinggi]]` dalam persen, jadi posisinya mengikuti ukuran layar dan file foto tidak berubah. Foto kecil di portfolio tidak menampilkan kotak, karena gambarnya dipotong.
 - Akun admin tidak perlu tabel: hanya satu orang, dan hash password ada di `.env.local`.
 
 ## Keputusan teknis yang mudah terlewat

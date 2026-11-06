@@ -58,6 +58,7 @@ Setiap sub judul punya satu kotak tulis di bagian bawah:
 - Jenis terakhir diingat, jadi paste banyak command berturut-turut tetap cepat.
 - Ctrl+Enter menyimpan.
 - Tombol pilih file tetap ada untuk foto yang bukan dari clipboard.
+- Seret di foto untuk memberi kotak merah penanda, maksimal 20 kotak per foto. Tersimpan otomatis, dihapus dengan tombol ×. File foto asli tidak berubah. Pengunjung melihat kotaknya tanpa tombol ×.
 - Tutorial, sub judul, dan blok bisa diubah, dihapus, dan diurutkan.
 - Status tutorial: `draft` atau `published`. Draft tidak tampil di publik.
 
