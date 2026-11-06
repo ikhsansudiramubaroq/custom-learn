@@ -1,0 +1,18 @@
+# Dependency dan hasil build
+node_modules/
+.next/
+next-env.d.ts
+
+# Rahasia lokal: password, secret, koneksi database
+.env
+.env.*
+
+# Foto yang diunggah, dibackup terpisah dari kode
+uploads/*
+!uploads/.gitkeep
+
+# Log dan file sistem
+*.log
+Thumbs.db
+.DS_Store
+.vscode/
