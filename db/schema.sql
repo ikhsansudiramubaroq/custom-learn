@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS tutorials (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  slug VARCHAR(120) NOT NULL UNIQUE,
+  title VARCHAR(200) NOT NULL,
+  summary VARCHAR(500) NOT NULL DEFAULT '',
+  category ENUM('linux', 'programming') NOT NULL,
+  status ENUM('draft', 'published') NOT NULL DEFAULT 'draft',
+  position INT NOT NULL DEFAULT 0,
+  in_portfolio TINYINT(1) NOT NULL DEFAULT 0,
+  outcome VARCHAR(300) NOT NULL DEFAULT '',
+  tools VARCHAR(200) NOT NULL DEFAULT '',
+  finished_on DATE NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS sections (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  tutorial_id INT UNSIGNED NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  position INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (tutorial_id) REFERENCES tutorials(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS blocks (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  section_id INT UNSIGNED NOT NULL,
+  type ENUM('text', 'image', 'link', 'command', 'code') NOT NULL,
+  content MEDIUMTEXT NOT NULL,
+  label VARCHAR(255) NOT NULL DEFAULT '',
+  position INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,21 @@
+{
+  "name": "custom-learn",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "mysql2": "^3.24.6",
+    "next": "^16.4.5",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

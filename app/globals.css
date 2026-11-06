@@ -1,0 +1,14 @@
+:root {
+  --paper: #f4f1ea;
+  --ink: #1c1b19;
+  --muted: #5f5b53;
+  --rule: #cfc9bb;
+  --accent: #b23a1e;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-serif), Georgia, serif;
+}

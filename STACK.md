@@ -118,7 +118,7 @@ Di XAMPP Control Panel, nyalakan **MySQL saja**. Apache tidak dipakai, karena Ne
 npm install
 node scripts/setup.mjs    # sekali saja: buat database dan password admin
 npm run dev               # http://localhost:3000
-node --test tests/        # tes
+npm test                  # tes
 ```
 
 Isi `.env.local`:
