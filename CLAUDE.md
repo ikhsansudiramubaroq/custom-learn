@@ -13,7 +13,7 @@ Jawab dalam Bahasa Indonesia.
 
 ## Status
 
-Tahap perencanaan. Belum ada kode. Jangan generate kode sebelum Ikhsan menyetujui dokumen ini.
+Keenam tahap di bawah selesai. Perubahan berikutnya mengikuti aturan yang sama, dan setiap tugas di-commit serta di-push dengan pesan berbahasa Indonesia.
 
 ## Tiga bagian web
 

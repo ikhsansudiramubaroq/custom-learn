@@ -889,3 +889,23 @@ kbd {
     margin-top: 0.75rem;
   }
 }
+
+/* Poles akhir */
+
+.block-text, .block-link {
+  max-width: 42rem;
+}
+
+.log a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+}
+
+.log a:hover {
+  color: var(--accent);
+}
+
+.doc-summary, .index-list p {
+  max-width: 42rem;
+}
