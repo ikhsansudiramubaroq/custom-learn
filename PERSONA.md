@@ -37,7 +37,7 @@ Konsepnya manual servis dan buku catatan lab yang ditulis saat bekerja, bukan la
 - **Huruf:** Source Serif 4 untuk bacaan, IBM Plex Mono untuk nomor, label, navigasi, dan kode.
 - **Tata letak:** nomor 1.1 menggantung di margin kiri teks seperti buku manual. Sidebar terlihat seperti daftar isi buku, bukan menu aplikasi.
 - **Garis:** pemisah memakai garis tipis dan sudut tegas, tanpa bayangan.
-- **Command:** blok tinta gelap selebar kolom teks, seperti label yang ditempel.
+- **Command:** blok tinta gelap selebar kolom isi, seperti label yang ditempel.
 - **Screenshot:** tampil apa adanya, dengan garis tipis dan caption seperti gambar di manual.
 - **Portfolio:** tabel daftar proyek bergaris dengan nomor, judul, tools, dan tahun, seperti log kerja. Bukan grid kartu.
 - **Gerak:** nyaris tidak ada. Tombol salin cukup berubah menjadi "Tersalin".
@@ -64,7 +64,7 @@ Pola ini membuat web terlihat dibuat AI:
 - Jika nama Ikhsan diganti, apakah tampilannya masih bisa menjadi web siapa saja? Jika ya, ulangi.
 - Dilihat dari screenshot asli di 1440 px dan 390 px, bukan dari kode.
 - Kontras teks memenuhi WCAG AA, fokus keyboard terlihat, `prefers-reduced-motion` dihormati.
-- Baris teks bacaan sekitar 65 sampai 75 karakter. Kode panjang menggulir di dalam bloknya, bukan melebarkan halaman.
+- Baris teks bacaan sekitar 65 sampai 75 karakter, sedangkan command, kode, dan foto memakai seluruh lebar kolom isi. Kode panjang menggulir di dalam bloknya, bukan melebarkan halaman.
 - Tombol di HP minimal 44 px.
 
 ## Cara berkomunikasi

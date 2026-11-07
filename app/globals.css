@@ -81,12 +81,14 @@ h1 {
   align-items: start;
 }
 
+/* Kolom memakai seluruh lebar untuk command, kode, dan foto. Teks dibatasi sendiri supaya nyaman dibaca. */
 .doc {
-  padding: 2.5rem 1.5rem 5rem;
-  max-width: 54rem;
+  min-width: 0;
+  padding: 2.5rem 2.5rem 5rem 1.5rem;
 }
 
 .doc-narrow {
+  max-width: 54rem;
   margin: 0 auto;
 }
 
