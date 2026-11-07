@@ -36,6 +36,7 @@ custom-learn/
 │   │   └── [slug]/pdf/page.js     semua sub judul, siap dicetak ke PDF
 │   ├── uploads/[name]/route.js    menyajikan foto
 │   ├── api/upload/route.js        menerima foto dari paste atau pilih file
+│   ├── api/autosave/route.js      simpan otomatis isian Studio
 │   └── studio/
 │       ├── login/page.js
 │       ├── layout.js
@@ -44,6 +45,8 @@ custom-learn/
 │       ├── [id]/page.js           editor satu tutorial
 │       └── actions.js             Server Actions tulis data
 ├── components/
+│   ├── AutoSaveForm.js            client component, form yang tersimpan sendiri
+│   ├── SaveStatus.js              client component, bar status simpan
 │   ├── TutorialSidebar.js
 │   ├── Block.js                   tampilan lima jenis blok
 │   ├── ConfirmButton.js           client component, konfirmasi hapus
@@ -57,6 +60,8 @@ custom-learn/
 │   ├── db.js                      pool koneksi
 │   ├── auth.js                    password, token sesi, batas login
 │   ├── session.js                 cookie sesi dan requireAdmin
+│   ├── autosave.js                antrean simpan dan status gabungan
+│   ├── form.js                    membaca dan memeriksa isian form
 │   ├── uploads.js                 folder foto dan hapus file
 │   ├── content.js                 query tutorial, pencarian, portfolio
 │   ├── search.js                  logika hasil pencarian
@@ -123,6 +128,8 @@ CREATE TABLE blocks (
 
 - **Foto tidak disimpan di `public/`.** Produksi Next.js hanya menyajikan isi `public/` yang ada saat build, jadi foto baru tidak akan muncul. Foto disimpan di `uploads/` dan disajikan lewat route dengan `Content-Type` yang benar dan `X-Content-Type-Options: nosniff`.
 - **Upload lewat Route Handler,** karena Server Action dibatasi 1 MB secara default, sedangkan screenshot bisa lebih besar. Route ini memeriksa sesi dan header `Origin` sendiri.
+- **Simpan otomatis lewat Route Handler, bukan Server Action.** Next.js membuang Server Action yang sedang berjalan saat pindah halaman, dan `await`-nya tidak pernah selesai, sehingga status bisa macet di "Menyimpan...". Route ini memeriksa sesi dan `Origin` sendiri, sama seperti upload.
+- **Kotak tulis tidak ikut tersimpan otomatis.** Jenis blok dipilih setelah paste dan tidak bisa diubah sesudahnya, jadi membuat blok diam-diam bisa salah jenis. Isinya dititipkan di `localStorage` sampai ditambahkan.
 - **Halaman publik memakai `export const dynamic = 'force-dynamic'`.** Tanpa ini, Next.js bisa merender halaman saat build, sehingga butuh database saat build dan tutorial baru tidak muncul.
 - **Hash password memakai format `salt:hash` dalam hex,** karena `.env.local` memperlakukan `$` sebagai variabel.
 - **Tanda `$` pada blok command dibuat dengan CSS,** jadi tidak ikut tersalin.

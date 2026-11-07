@@ -74,12 +74,14 @@ Setiap sub judul punya satu kotak tulis di bagian bawah:
 - Paste teks: masuk ke kotak, lalu pilih jenisnya: Teks, Command, atau Code. Spasi dan baris baru tetap utuh.
 - Paste URL saja: otomatis menjadi jenis Link.
 - Jenis terakhir diingat, jadi paste banyak command berturut-turut tetap cepat.
-- Ctrl+Enter menyimpan.
+- Ctrl+Enter atau tombol Tambah menjadikannya blok. Isi yang belum ditambahkan dititipkan di browser, jadi tidak hilang saat pindah halaman.
 - Tombol pilih file tetap ada untuk foto yang bukan dari clipboard.
 - Seret di foto untuk memberi kotak merah penanda, maksimal 20 kotak per foto. Tersimpan otomatis, dihapus dengan tombol ×. File foto asli tidak berubah. Pengunjung melihat kotaknya tanpa tombol ×.
 - Tutorial, sub judul, dan blok bisa diubah, dihapus, dan diurutkan.
 - Status tutorial: `draft` atau `published`. Draft tidak tampil di publik.
-- Setiap simpan, ubah, dan hapus yang berhasil memunculkan notifikasi singkat selama 2 detik.
+- Tidak ada tombol Simpan. Isian tutorial, sub judul, dan blok tersimpan otomatis 0,8 detik setelah berhenti mengetik, saat pindah kolom, dan saat pindah halaman.
+- Bar di atas editor selalu terlihat dan menjadi satu-satunya tempat melihat status: tersimpan beserta jamnya, sedang menyimpan, isian wajib kosong, atau gagal dengan tombol Coba lagi. Selama ada yang belum tersimpan, browser memperingatkan sebelum tab ditutup.
+- Setiap tambah, hapus, dan ubah urutan yang berhasil memunculkan notifikasi singkat selama 2 detik.
 
 ## Aturan yang tidak boleh dilanggar
 

@@ -788,12 +788,59 @@ mark {
   margin-bottom: 2rem;
 }
 
-.studio-back {
+/* Selalu terlihat, jadi status simpan tidak perlu dicari di tutorial yang panjang. */
+.studio-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
-  justify-content: space-between;
-  margin: 0 0 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  margin: -0.5rem 0 1.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
   font-family: var(--sans-mono);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+}
+
+.studio-bar .row-actions {
+  gap: 1rem;
+  margin-left: auto;
+}
+
+@media (max-width: 52rem) {
+  .studio-bar a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+}
+
+.save-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  min-height: 2rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+.save-status[data-state='failed'], .save-status[data-state='invalid'] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.save-status[data-state='draft'] {
+  color: var(--ink);
+}
+
+.studio .save-status button {
+  min-height: 2rem;
+  padding: 0 0.5rem;
+  font-weight: 400;
 }
 
 .studio-list {

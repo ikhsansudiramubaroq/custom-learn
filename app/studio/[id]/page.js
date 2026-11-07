@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import AutoSaveForm from '@/components/AutoSaveForm'
 import Composer from '@/components/Composer'
 import ConfirmButton from '@/components/ConfirmButton'
 import MarkEditor from '@/components/MarkEditor'
+import SaveStatus from '@/components/SaveStatus'
 import { CATEGORY_LABELS, getTutorialForEdit } from '@/lib/content'
 import { requireAdmin } from '@/lib/session'
 import {
@@ -12,9 +14,6 @@ import {
   deleteTutorial,
   moveBlock,
   moveSection,
-  updateBlock,
-  updateSection,
-  updateTutorial,
 } from '../actions'
 
 const BLOCK_LABELS = {
@@ -28,7 +27,7 @@ const LABEL_HINTS = { image: 'Caption', link: 'Teks link', code: 'Bahasa' }
 
 function BlockForm({ block }) {
   return (
-    <form action={updateBlock.bind(null, block.id)} className="block-form">
+    <AutoSaveForm kind="block" id={block.id} className="block-form">
       <span className="meta">{BLOCK_LABELS[block.type]}</span>
       {block.type === 'image' ? (
         <MarkEditor blockId={block.id} name={block.content} alt={block.label || 'Foto'} initialMarks={block.marks} />
@@ -47,12 +46,11 @@ function BlockForm({ block }) {
         <input name="label" defaultValue={block.label} maxLength={255} placeholder={LABEL_HINTS[block.type]} aria-label={LABEL_HINTS[block.type]} />
       )}
       <div className="row-actions">
-        <button type="submit">Simpan</button>
         <button formAction={moveBlock.bind(null, block.id, -1)} formNoValidate aria-label="Naikkan blok">↑</button>
         <button formAction={moveBlock.bind(null, block.id, 1)} formNoValidate aria-label="Turunkan blok">↓</button>
         <ConfirmButton formAction={deleteBlock.bind(null, block.id)} message="Hapus blok ini?">Hapus</ConfirmButton>
       </div>
-    </form>
+    </AutoSaveForm>
   )
 }
 
@@ -64,13 +62,18 @@ export default async function EditTutorialPage({ params }) {
 
   return (
     <>
-      <p className="studio-back">
+      <div className="studio-bar">
         <Link href="/studio">← Studio</Link>
-        {tutorial.status === 'published' && <Link href={`/tutorial/${tutorial.slug}`}>Lihat halaman publik</Link>}
-        {tutorial.status === 'published' && <Link href={`/tutorial/${tutorial.slug}/pdf`}>Lihat versi PDF</Link>}
-      </p>
+        <SaveStatus />
+        {tutorial.status === 'published' && (
+          <span className="row-actions">
+            <Link href={`/tutorial/${tutorial.slug}`}>Halaman publik</Link>
+            <Link href={`/tutorial/${tutorial.slug}/pdf`}>PDF</Link>
+          </span>
+        )}
+      </div>
 
-      <form action={updateTutorial.bind(null, tutorial.id)} className="stack">
+      <AutoSaveForm kind="tutorial" id={tutorial.id} refresh className="stack">
         <label>
           Judul
           <input name="title" defaultValue={tutorial.title} required maxLength={200} />
@@ -118,29 +121,27 @@ export default async function EditTutorialPage({ params }) {
         </fieldset>
 
         <div className="row-actions">
-          <button type="submit">Simpan</button>
           <ConfirmButton formAction={deleteTutorial.bind(null, tutorial.id)} message={`Hapus "${tutorial.title}" beserta semua isi dan fotonya?`}>
             Hapus tutorial
           </ConfirmButton>
         </div>
-      </form>
+      </AutoSaveForm>
 
       {tutorial.sections.map((section, index) => (
         <section key={section.id} className="studio-section">
-          <form action={updateSection.bind(null, section.id)} className="row-form">
+          <AutoSaveForm kind="section" id={section.id} className="row-form">
             <label className="grow">
               Sub judul {index + 1}
               <input name="title" defaultValue={section.title} required maxLength={200} />
             </label>
             <div className="row-actions">
-              <button type="submit">Simpan</button>
               <button formAction={moveSection.bind(null, section.id, -1)} formNoValidate aria-label="Naikkan sub judul">↑</button>
               <button formAction={moveSection.bind(null, section.id, 1)} formNoValidate aria-label="Turunkan sub judul">↓</button>
               <ConfirmButton formAction={deleteSection.bind(null, section.id)} message={`Hapus sub judul "${section.title}" beserta isinya?`}>
                 Hapus
               </ConfirmButton>
             </div>
-          </form>
+          </AutoSaveForm>
           {section.blocks.map((block) => <BlockForm key={block.id} block={block} />)}
           <Composer sectionId={section.id} />
         </section>

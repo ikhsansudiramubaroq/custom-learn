@@ -2,19 +2,12 @@ import { randomBytes } from 'node:crypto'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { db } from '@/lib/db'
-import { isAdmin, setFlash } from '@/lib/session'
+import { isAdmin, isSameOrigin, setFlash } from '@/lib/session'
 import { UPLOAD_DIR, removeImages } from '@/lib/uploads'
 import { MAX_IMAGE_BYTES, detectImageType } from '@/lib/validate'
 
 function fail(status, error) {
   return Response.json({ error }, { status })
-}
-
-// Route Handler tidak mendapat pemeriksaan Origin otomatis seperti Server Action.
-function isSameOrigin(request) {
-  const origin = request.headers.get('origin')
-  const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host')
-  return Boolean(origin) && new URL(origin).host === host
 }
 
 export async function POST(request) {

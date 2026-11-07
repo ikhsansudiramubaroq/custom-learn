@@ -4,35 +4,18 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { CATEGORY_LABELS } from '@/lib/content'
 import { db } from '@/lib/db'
+import { blockContent, field, required } from '@/lib/form'
 import { logIn, logOut, requireAdmin, setFlash } from '@/lib/session'
 import { removeImages } from '@/lib/uploads'
-import { isHttpUrl, parseMarks, slugify } from '@/lib/validate'
+import { parseMarks, slugify } from '@/lib/validate'
 
 // Setiap fungsi yang diekspor di sini bisa dipanggil langsung lewat HTTP,
 // jadi semuanya wajib memanggil requireAdmin() lebih dulu.
-
-function field(formData, name, max) {
-  return String(formData.get(name) ?? '').trim().slice(0, max)
-}
-
-function required(formData, name, max) {
-  const value = field(formData, name, max)
-  if (!value) throw new Error(`${name} wajib diisi`)
-  return value
-}
 
 function category(formData) {
   const value = formData.get('category')
   if (!Object.hasOwn(CATEGORY_LABELS, value)) throw new Error('Kategori tidak dikenal')
   return value
-}
-
-// Form mengirim baris baru sebagai \r\n. Selain itu isi blok disimpan persis seperti di-paste.
-function blockContent(type, formData) {
-  const content = String(formData.get('content') ?? '').replace(/\r\n/g, '\n')
-  if (!content.trim()) throw new Error('Isi blok wajib diisi')
-  if (type === 'link' && !isHttpUrl(content.trim())) throw new Error('Link harus http atau https')
-  return type === 'link' ? content.trim() : content
 }
 
 async function nextPosition(table, column, value) {
@@ -87,30 +70,6 @@ export async function createTutorial(formData) {
   redirect(`/studio/${result.insertId}`)
 }
 
-// Slug tidak ikut berubah, supaya link yang sudah dibagikan tetap hidup.
-export async function updateTutorial(id, formData) {
-  await requireAdmin()
-  const status = formData.get('status') === 'published' ? 'published' : 'draft'
-  const finishedOn = field(formData, 'finished_on', 10)
-  if (finishedOn && !/^\d{4}-\d{2}-\d{2}$/.test(finishedOn)) throw new Error('Tanggal tidak valid')
-  await db.execute(
-    `UPDATE tutorials SET title = ?, summary = ?, category = ?, status = ?,
-     in_portfolio = ?, outcome = ?, tools = ?, finished_on = ? WHERE id = ?`,
-    [
-      required(formData, 'title', 200),
-      field(formData, 'summary', 500),
-      category(formData),
-      status,
-      formData.get('in_portfolio') ? 1 : 0,
-      field(formData, 'outcome', 300),
-      field(formData, 'tools', 200),
-      finishedOn || null,
-      id,
-    ],
-  )
-  await refresh('Tutorial disimpan')
-}
-
 export async function deleteTutorial(id) {
   await requireAdmin()
   const [images] = await db.execute(
@@ -138,12 +97,6 @@ export async function addSection(tutorialId, formData) {
   await refresh('Sub judul ditambahkan')
 }
 
-export async function updateSection(id, formData) {
-  await requireAdmin()
-  await db.execute('UPDATE sections SET title = ? WHERE id = ?', [required(formData, 'title', 200), id])
-  await refresh('Sub judul disimpan')
-}
-
 export async function deleteSection(id) {
   await requireAdmin()
   const [images] = await db.execute("SELECT content FROM blocks WHERE type = 'image' AND section_id = ?", [id])
@@ -166,19 +119,6 @@ export async function addBlock(sectionId, formData) {
     [sectionId, type, blockContent(type, formData), field(formData, 'label', 255), await nextPosition('blocks', 'section_id', sectionId)],
   )
   await refresh('Blok ditambahkan')
-}
-
-export async function updateBlock(id, formData) {
-  await requireAdmin()
-  const [[block]] = await db.execute('SELECT type FROM blocks WHERE id = ?', [id])
-  if (!block) return
-  const label = field(formData, 'label', 255)
-  if (block.type === 'image') {
-    await db.execute('UPDATE blocks SET label = ? WHERE id = ?', [label, id])
-  } else {
-    await db.execute('UPDATE blocks SET content = ?, label = ? WHERE id = ?', [blockContent(block.type, formData), label, id])
-  }
-  await refresh('Blok disimpan')
 }
 
 export async function updateMarks(id, value) {

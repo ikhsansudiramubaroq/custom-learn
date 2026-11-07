@@ -1,8 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { addBlock } from '@/app/studio/actions'
+import { report } from '@/lib/autosave'
 import { isHttpUrl } from '@/lib/validate'
 
 const TYPES = [['text', 'Teks'], ['command', 'Command'], ['code', 'Code'], ['link', 'Link']]
@@ -16,6 +17,29 @@ export default function Composer({ sectionId }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const typeBeforeLink = useRef(null)
+  const draftKey = `composer-${sectionId}`
+  const hasDraft = Boolean(content.trim())
+
+  // Kotak tulis belum menjadi blok, jadi isinya dititipkan di browser supaya tidak hilang saat pindah halaman.
+  useEffect(() => {
+    try {
+      const draft = JSON.parse(localStorage.getItem(draftKey))
+      if (draft) {
+        setType(draft.type)
+        setContent(draft.content)
+        setLabel(draft.label)
+      }
+    } catch {}
+  }, [draftKey])
+
+  useEffect(() => {
+    report(draftKey, hasDraft ? 'draft' : null)
+    try {
+      if (hasDraft) localStorage.setItem(draftKey, JSON.stringify({ type, content, label }))
+      else localStorage.removeItem(draftKey)
+    } catch {}
+    return () => report(draftKey, null)
+  }, [draftKey, hasDraft, type, content, label])
 
   async function upload(files) {
     setBusy(true)
@@ -123,11 +147,11 @@ export default function Composer({ sectionId }) {
             />
           </label>
           <button type="button" className="primary" onClick={save} disabled={busy || !content.trim()}>
-            Simpan <kbd>Ctrl+Enter</kbd>
+            Tambah <kbd>Ctrl+Enter</kbd>
           </button>
         </div>
       </div>
-      <p role="status" className={error ? 'form-error' : 'meta'}>{error || (busy ? 'Menyimpan...' : '')}</p>
+      <p role="status" className={error ? 'form-error' : 'meta'}>{error || (busy ? 'Menyimpan...' : hasDraft ? 'Belum menjadi blok, tekan Tambah.' : '')}</p>
     </div>
   )
 }
