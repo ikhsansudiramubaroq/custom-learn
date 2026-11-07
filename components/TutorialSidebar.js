@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import TocScroll from '@/components/TocScroll'
 import { CATEGORY_LABELS } from '@/lib/content'
 import { MAX_QUERY } from '@/lib/search'
 import { sectionPath } from '@/lib/seo'
@@ -68,11 +69,15 @@ export default function TutorialSidebar({ tutorials, active, activeSection, quer
       <div className="search-mobile"><SearchForm query={query} /></div>
       <details className="toc toc-mobile">
         <summary>Daftar isi</summary>
-        <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
+        <TocScroll activeId={activeSection?.id ?? active?.id}>
+          <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
+        </TocScroll>
       </details>
       <aside className="toc toc-desktop" aria-label="Daftar tutorial">
         <SearchForm query={query} />
-        <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
+        <TocScroll activeId={activeSection?.id ?? active?.id}>
+          <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
+        </TocScroll>
       </aside>
     </>
   )

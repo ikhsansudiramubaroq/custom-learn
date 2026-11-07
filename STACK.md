@@ -48,6 +48,7 @@ custom-learn/
 │   ├── AutoSaveForm.js            client component, form yang tersimpan sendiri
 │   ├── SaveStatus.js              client component, bar status simpan
 │   ├── TutorialSidebar.js
+│   ├── TocScroll.js               client component, gulir daftar isi ke item aktif
 │   ├── Block.js                   tampilan lima jenis blok
 │   ├── ConfirmButton.js           client component, konfirmasi hapus
 │   ├── CopyButton.js              client component
@@ -135,7 +136,7 @@ CREATE TABLE blocks (
 - **Tanda `$` pada blok command dibuat dengan CSS,** jadi tidak ikut tersalin.
 - **`<img>` biasa,** dengan `loading="lazy"`. `shortcut: screenshot besar dimuat apa adanya, pakai next/image jika halaman terasa lambat`.
 - **Batas login disimpan di memori proses.** `shortcut: hilang saat restart dan tidak berbagi antar proses, simpan di database jika berjalan lebih dari satu proses`.
-- **JavaScript di halaman publik hanya untuk tombol salin.** Selain itu Server Component, dan sidebar di HP memakai `<details>`.
+- **JavaScript di halaman publik hanya untuk tombol salin dan menggulir daftar isi ke item aktif.** Selain itu Server Component, dan sidebar di HP memakai `<details>`.
 
 ## Menjalankan
 
