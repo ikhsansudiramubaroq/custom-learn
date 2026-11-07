@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { MAX_RESULTS, escapeLike, groupResults, matchParts } from '../lib/search.js'
-import { describeSection, sectionPath, sectionTitle } from '../lib/seo.js'
+import { describeSection, homeSchema, sectionPath, sectionTitle, tutorialSchema } from '../lib/seo.js'
 
 const tutorials = [
   { id: 1, slug: 'proxmox', title: 'Instalasi Apache', number: 1 },
@@ -88,4 +88,23 @@ test('deskripsi SEO dari ringkasan dan teks', () => {
   assert.equal(describeSection({ title: 'Proxmox', summary: '' }, undefined, 0), 'Proxmox')
   const long = describeSection({ title: 'P', summary: `${'kata '.repeat(100)}` }, undefined, 0)
   assert.ok(long.length <= 156 && long.endsWith('…') && !long.includes(' …'))
+})
+
+test('data terstruktur beranda dan tutorial', () => {
+  const home = homeSchema('https://a.test')
+  assert.equal(home['@graph'][0].name, 'Ikhsan Sudira Mubaroq')
+  assert.equal(home['@graph'][1]['@type'], 'WebSite')
+
+  const tutorial = { slug: 'p', title: 'Proxmox', summary: 'Ringkas', finished_on: '2026-10-12' }
+  const section = { title: 'Buat VM', blocks: [{ type: 'image', content: 'a.png' }] }
+  const [, article, crumbs] = tutorialSchema('https://a.test', tutorial, section, 1)['@graph']
+  assert.equal(article.url, 'https://a.test/tutorial/p/2')
+  assert.deepEqual(article.image, ['https://a.test/uploads/a.png'])
+  assert.equal(article.datePublished, '2026-10-12')
+  assert.deepEqual(crumbs.itemListElement.map((crumb) => crumb.name), ['Tutorial', 'Proxmox', 'Buat VM'])
+
+  const [, firstArticle, firstCrumbs] = tutorialSchema('https://a.test', { ...tutorial, finished_on: null }, undefined, 0)['@graph']
+  assert.equal(firstArticle.image, undefined)
+  assert.equal(firstArticle.datePublished, undefined)
+  assert.equal(firstCrumbs.itemListElement.length, 2)
 })

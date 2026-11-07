@@ -48,7 +48,7 @@ Contoh alur satu tutorial: instalasi Proxmox, membuat VM Ubuntu Server, sampai w
 - Setiap sub judul punya judul, deskripsi, canonical, dan Open Graph sendiri. Deskripsi diambil dari ringkasan atau teks pertama.
 - `/sitemap.xml` dan `/robots.txt` dibuat otomatis. Tutorial baru langsung masuk, draft tidak.
 - `/cari` dan Studio tidak diindeks.
-- JSON-LD tidak dipakai, karena cara resminya butuh `dangerouslySetInnerHTML`.
+- JSON-LD ditulis lewat `components/JsonLd.js` sebagai teks anak `<script>`, tanpa `dangerouslySetInnerHTML`. Beranda memuat Person dan WebSite, tutorial memuat TechArticle dan BreadcrumbList.
 
 ## Portfolio
 
@@ -56,6 +56,7 @@ Isinya tidak diketik ulang. Portfolio mengambil tutorial yang sudah ada.
 
 - Di Studio, tutorial ditandai "Tampilkan di portfolio", lalu diisi hasil akhir, tools, dan tanggal selesai.
 - Hanya tutorial yang `published` dan ditandai yang tampil.
+- Urutan portfolio sama dengan urutan di Studio (nomor 1 di atas) dan tidak berubah karena status draft atau tanda portfolio.
 - Gambar yang mewakili adalah foto pertama di tutorial itu.
 - Klik item portfolio membuka halaman tutorialnya, jadi bukti kerjanya adalah langkah yang sebenarnya.
 - Profil (nama, bio, kontak) disimpan di `lib/profile.js`.

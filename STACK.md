@@ -48,6 +48,7 @@ custom-learn/
 │   ├── Block.js                   tampilan lima jenis blok
 │   ├── ConfirmButton.js           client component, konfirmasi hapus
 │   ├── CopyButton.js              client component
+│   ├── JsonLd.js                  data terstruktur untuk mesin pencari
 │   ├── Flash.js                   client component, notifikasi singkat Studio
 │   ├── MarkEditor.js              client component, seret kotak merah
 │   ├── PrintButton.js             client component, buka jendela cetak

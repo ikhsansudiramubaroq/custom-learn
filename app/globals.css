@@ -1066,6 +1066,8 @@ kbd {
 
 @media (max-width: 52rem) {
   .site-header {
+    flex-wrap: wrap;
+    gap: 0 1.5rem;
     padding: 0.25rem 1.25rem;
     align-items: center;
   }

@@ -11,6 +11,9 @@ next-env.d.ts
 uploads/*
 !uploads/.gitkeep
 
+# Panduan deploy pribadi
+PRODUCTION.MD
+
 # Log dan file sistem
 *.log
 Thumbs.db

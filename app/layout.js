@@ -10,8 +10,10 @@ const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '600'], variabl
 export async function generateMetadata() {
   return {
     metadataBase: new URL(await siteUrl()),
-    title: { default: `${profile.name}: catatan kerja`, template: `%s · ${profile.name}` },
-    description: profile.bio,
+    title: { default: `${profile.name} | Portfolio Linux dan Programming`, template: `%s | ${profile.name}` },
+    description: `Portfolio ${profile.name}. ${profile.bio}`,
+    authors: [{ name: profile.name }],
+    creator: profile.name,
   }
 }
 

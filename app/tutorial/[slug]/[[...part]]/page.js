@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Block from '@/components/Block'
+import JsonLd from '@/components/JsonLd'
 import TutorialSidebar from '@/components/TutorialSidebar'
 import { getPublishedTutorial, getPublishedTutorials } from '@/lib/content'
 import { profile } from '@/lib/profile'
-import { describeSection, sectionPath, sectionTitle } from '@/lib/seo'
+import { describeSection, sectionPath, sectionTitle, tutorialSchema } from '@/lib/seo'
+import { siteUrl } from '@/lib/site'
 
 export const dynamic = 'force-dynamic'
 
@@ -59,9 +61,11 @@ export default async function TutorialPage({ params }) {
   if (!page) notFound()
   const { tutorial, section, index } = page
   const tutorials = await getPublishedTutorials()
+  const base = await siteUrl()
 
   return (
     <div className="doc-layout">
+      <JsonLd data={tutorialSchema(base, tutorial, section, index)} />
       <TutorialSidebar tutorials={tutorials} active={tutorial} activeSection={section} />
       <main className="doc">
         <header className="doc-header">
