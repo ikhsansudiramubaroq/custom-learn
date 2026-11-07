@@ -44,6 +44,7 @@ export default async function PortfolioPage() {
                 <td>
                   <Link href={sectionPath(project.slug, 0)}>{project.title}</Link>
                   {project.outcome && <p>{project.outcome}</p>}
+                  <Link href={`/tutorial/${project.slug}/pdf`} prefetch={false} className="log-pdf">Lihat PDF</Link>
                 </td>
                 <td className="log-meta">{project.tools}</td>
                 <td className="log-meta">{project.finished_on?.slice(0, 7)}</td>

@@ -1,7 +1,7 @@
 import { markStyle } from '@/lib/validate'
 import CopyButton from './CopyButton'
 
-export default function Block({ block }) {
+export default function Block({ block, eager = false }) {
   const { type, content, label } = block
   const id = `b-${block.id}`
 
@@ -14,7 +14,8 @@ export default function Block({ block }) {
           <img
             src={`/uploads/${content}`}
             alt={`${label || 'Screenshot langkah ini'}${block.marks.length ? ', dengan bagian penting ditandai kotak merah' : ''}`}
-            loading="lazy"
+            // Foto lazy belum termuat saat dicetak, jadi halaman PDF memuat semuanya.
+            loading={eager ? 'eager' : 'lazy'}
             decoding="async"
           />
           {block.marks.map((box) => <span key={box.join()} className="mark" style={markStyle(box)} />)}

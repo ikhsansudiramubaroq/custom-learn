@@ -59,6 +59,7 @@ Isinya tidak diketik ulang. Portfolio mengambil tutorial yang sudah ada.
 - Gambar yang mewakili adalah foto pertama di tutorial itu.
 - Klik item portfolio membuka halaman tutorialnya, jadi bukti kerjanya adalah langkah yang sebenarnya.
 - Profil (nama, bio, kontak) disimpan di `lib/profile.js`.
+- Setiap tutorial terbit punya versi satu halaman di `/tutorial/<slug>/pdf`, berisi semua sub judul. Link ini bisa dibagikan, dan tombol Simpan PDF memakai fitur cetak browser. Halaman ini tidak diindeks.
 
 ## Pengunjung hanya baca
 

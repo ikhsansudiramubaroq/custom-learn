@@ -32,7 +32,8 @@ custom-learn/
 │   ├── cari/page.js               hasil pencarian
 │   ├── tutorial/
 │   │   ├── page.js                daftar tutorial
-│   │   └── [slug]/[[...part]]/page.js   satu sub judul per halaman
+│   │   ├── [slug]/[[...part]]/page.js   satu sub judul per halaman
+│   │   └── [slug]/pdf/page.js     semua sub judul, siap dicetak ke PDF
 │   ├── uploads/[name]/route.js    menyajikan foto
 │   ├── api/upload/route.js        menerima foto dari paste atau pilih file
 │   └── studio/
@@ -49,6 +50,7 @@ custom-learn/
 │   ├── CopyButton.js              client component
 │   ├── Flash.js                   client component, notifikasi singkat Studio
 │   ├── MarkEditor.js              client component, seret kotak merah
+│   ├── PrintButton.js             client component, buka jendela cetak
 │   └── Composer.js                client component, kotak paste
 ├── lib/
 │   ├── db.js                      pool koneksi

@@ -67,6 +67,7 @@ export default async function EditTutorialPage({ params }) {
       <p className="studio-back">
         <Link href="/studio">← Studio</Link>
         {tutorial.status === 'published' && <Link href={`/tutorial/${tutorial.slug}`}>Lihat halaman publik</Link>}
+        {tutorial.status === 'published' && <Link href={`/tutorial/${tutorial.slug}/pdf`}>Lihat versi PDF</Link>}
       </p>
 
       <form action={updateTutorial.bind(null, tutorial.id)} className="stack">

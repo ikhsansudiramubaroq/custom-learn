@@ -1192,3 +1192,161 @@ kbd {
 .flash:empty {
   display: none;
 }
+
+/* Versi PDF */
+
+.pdf {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+}
+
+.pdf-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  font-family: var(--sans-mono);
+  font-size: 0.875rem;
+}
+
+.pdf-print {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans-mono);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.pdf-print:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.pdf-hint {
+  margin: 0.5rem 0 2.5rem;
+  color: var(--muted);
+  font-family: var(--sans-mono);
+  font-size: 0.75rem;
+}
+
+.pdf-cover {
+  padding-bottom: 2rem;
+}
+
+.pdf-facts {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.25rem 1rem;
+  margin: 1.5rem 0 0;
+}
+
+.pdf-facts dt {
+  color: var(--muted);
+  font-family: var(--sans-mono);
+  font-size: 0.8125rem;
+  line-height: 1.75rem;
+}
+
+.pdf-facts dd {
+  margin: 0;
+}
+
+.pdf .doc-section, .pdf .doc-section h2 {
+  display: block;
+}
+
+.pdf .doc-section h2 {
+  margin: 0;
+}
+
+.pdf .section-number {
+  display: inline;
+  margin-right: 0.75rem;
+}
+
+.log .log-pdf {
+  display: inline-block;
+  margin-top: 0.375rem;
+  font-family: var(--sans-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+@media (max-width: 52rem) {
+  .pdf {
+    padding: 1.25rem 1.25rem 4rem;
+  }
+
+  .pdf-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .log .log-pdf {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 16mm 14mm;
+}
+
+@media print {
+  .site-header, .pdf-bar, .pdf-hint, .copy-button {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .pdf {
+    max-width: none;
+    padding: 0;
+  }
+
+  .pdf .doc-section {
+    padding: 0.75rem 0 0.25rem;
+  }
+
+  .pdf h1 {
+    font-size: 22pt;
+  }
+
+  .pdf .doc-section h2 {
+    font-size: 14pt;
+    break-after: avoid;
+  }
+
+  /* Tanpa ini, baris panjang terpotong di tepi kertas. */
+  .pdf pre {
+    overflow: visible;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .pdf .block-command, .pdf .block-code, .pdf .block-image {
+    break-inside: avoid;
+  }
+
+  /* Browser membuang warna latar saat mencetak, kecuali diminta mempertahankannya. */
+  .pdf .block-command, .pdf .mark {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pdf .marked-image img {
+    max-height: 235mm;
+    width: auto;
+  }
+}
