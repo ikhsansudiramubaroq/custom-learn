@@ -80,6 +80,7 @@ custom-learn/
 ├── .gitignore
 ├── .htaccess                      Require all denied
 ├── next.config.mjs                ukuran foto dan header keamanan
+├── ecosystem.config.cjs           cara PM2 menjalankan aplikasi di server
 └── package.json
 ```
 
@@ -173,11 +174,14 @@ SESSION_SECRET=<acak, dibuat setup>
 
 Folder ini ada di `htdocs`, jadi jika Apache menyala, isinya bisa diakses lewat `localhost/custom-learn/`, termasuk `.env.local`. `.htaccess` di root menutup akses itu.
 
-## Deploy nanti
+## Deploy
 
-- Ubuntu dengan Node.js 22 dan `npm run build`, lalu `npm start`, dijalankan sebagai service dengan systemd.
-- Nginx atau Apache sebagai reverse proxy.
-- Isi `SITE_URL=https://domain-anda.com` di `.env.local`, supaya canonical dan sitemap memakai domain utama.
-- HTTPS wajib: cookie `secure` dan tombol salin (`navigator.clipboard`) hanya jalan di HTTPS.
-- Buat user MySQL khusus dengan password. Akun `root` tanpa password hanya untuk lokal.
+Target: VM Linux di Proxmox dengan aaPanel, domain `icandev.site` lewat Cloudflare Tunnel. Langkahnya ada di `PRODUCTION.MD`, yang tidak ikut ke GitHub.
+
+- Alur permintaan: Cloudflare, cloudflared, Nginx aaPanel, lalu Next.js di `127.0.0.1:3000`.
+- Dijalankan PM2 lewat `ecosystem.config.cjs`, satu proses saja.
+- Folder project tidak boleh menjadi root situs Nginx, karena `.htaccess` tidak berlaku dan `.env.local` bisa terbaca.
+- Isi `SITE_URL=https://icandev.site` di `.env.local`, supaya canonical dan sitemap memakai domain utama.
+- HTTPS wajib: cookie `secure` dan tombol salin hanya jalan di HTTPS. Karena itu login lewat IP lokal tidak bisa.
+- Buat user database khusus dengan password. Akun `root` tanpa password hanya untuk lokal.
 - Folder `uploads/` harus dibackup bersama database.

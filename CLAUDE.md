@@ -96,6 +96,7 @@ Setiap sub judul punya satu kotak tulis di bagian bawah:
 - Link hanya menerima `http` dan `https`.
 - Draft tidak boleh bisa diakses publik, termasuk lewat URL langsung. Semua query publik wajib memfilter `published`.
 - Rahasia hanya di `.env.local`, tidak pernah memakai awalan `NEXT_PUBLIC_`.
+- Header keamanan dan CSP diatur di `next.config.mjs`. Jangan menambah script atau font dari domain luar.
 - Saat data dihapus, file foto terkait dan salinan kecilnya ikut dihapus setelah database berhasil.
 
 ## Hemat beban server
