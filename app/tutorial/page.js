@@ -3,7 +3,11 @@ import TutorialSidebar from '@/components/TutorialSidebar'
 import { getPublishedTutorials } from '@/lib/content'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Tutorial' }
+export const metadata = {
+  title: 'Tutorial',
+  description: 'Catatan langkah demi langkah belajar Linux dan programming, lengkap dengan command dan kode.',
+  alternates: { canonical: '/tutorial' },
+}
 
 export default async function TutorialsPage() {
   const tutorials = await getPublishedTutorials()

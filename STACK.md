@@ -26,6 +26,10 @@ custom-learn/
 │   ├── globals.css
 │   ├── page.js                    Portfolio
 │   ├── not-found.js
+│   ├── sitemap.js                 daftar halaman untuk mesin pencari
+│   ├── robots.js
+│   ├── icon.svg
+│   ├── cari/page.js               hasil pencarian
 │   ├── tutorial/
 │   │   ├── page.js                daftar tutorial
 │   │   └── [slug]/[[...part]]/page.js   satu sub judul per halaman
@@ -51,7 +55,10 @@ custom-learn/
 │   ├── auth.js                    password, token sesi, batas login
 │   ├── session.js                 cookie sesi dan requireAdmin
 │   ├── uploads.js                 folder foto dan hapus file
-│   ├── content.js                 query tutorial dan portfolio
+│   ├── content.js                 query tutorial, pencarian, portfolio
+│   ├── search.js                  logika hasil pencarian
+│   ├── seo.js                     URL, judul, dan deskripsi halaman
+│   ├── site.js                    alamat situs
 │   ├── validate.js                cek file, URL, slug
 │   └── profile.js                 nama, bio, kontak
 ├── db/schema.sql
@@ -145,6 +152,7 @@ Folder ini ada di `htdocs`, jadi jika Apache menyala, isinya bisa diakses lewat 
 
 - Ubuntu dengan Node.js 22 dan `npm run build`, lalu `npm start`, dijalankan sebagai service dengan systemd.
 - Nginx atau Apache sebagai reverse proxy.
+- Isi `SITE_URL=https://domain-anda.com` di `.env.local`, supaya canonical dan sitemap memakai domain utama.
 - HTTPS wajib: cookie `secure` dan tombol salin (`navigator.clipboard`) hanya jalan di HTTPS.
 - Buat user MySQL khusus dengan password. Akun `root` tanpa password hanya untuk lokal.
 - Folder `uploads/` harus dibackup bersama database.

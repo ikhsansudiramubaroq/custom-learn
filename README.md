@@ -9,6 +9,8 @@ Web catatan belajar Linux dan programming yang sekaligus menjadi portfolio. Seti
 - **Studio (`/studio`):** halaman admin satu akun untuk menulis tutorial.
 - **Paste langsung:** screenshot, command, code, dan link cukup di-paste.
 - **Kotak merah:** seret di foto untuk menandai bagian penting.
+- **Pencarian:** mencari judul, sub judul, teks, command, dan kode, dengan hasil per baris seperti dokumentasi.
+- **SEO:** judul dan deskripsi per sub judul, canonical, Open Graph, sitemap, dan robots otomatis.
 - **Pengunjung hanya baca:** bisa melihat, membaca, dan menyalin. Command dan code punya tombol salin.
 
 ## Teknologi

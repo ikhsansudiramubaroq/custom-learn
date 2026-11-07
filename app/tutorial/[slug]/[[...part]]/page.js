@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Block from '@/components/Block'
 import TutorialSidebar from '@/components/TutorialSidebar'
 import { getPublishedTutorial, getPublishedTutorials } from '@/lib/content'
+import { profile } from '@/lib/profile'
+import { describeSection, sectionPath, sectionTitle } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,9 +22,24 @@ export async function generateMetadata({ params }) {
   const page = await load(params)
   if (!page) return {}
   const { tutorial, section, index } = page
+  const title = sectionTitle(tutorial, section, index)
+  const description = describeSection(tutorial, section, index)
+  const canonical = sectionPath(tutorial.slug, index)
+  const image = section?.blocks.find((block) => block.type === 'image')?.content
   return {
-    title: index > 0 ? `${section.number} ${section.title}: ${tutorial.title}` : tutorial.title,
-    description: tutorial.summary,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      type: 'article',
+      siteName: profile.name,
+      locale: 'id_ID',
+      title,
+      description,
+      url: canonical,
+      images: image ? [`/uploads/${image}`] : undefined,
+    },
+    twitter: { card: image ? 'summary_large_image' : 'summary' },
   }
 }
 
@@ -30,7 +47,7 @@ function PagerLink({ tutorial, index, label, className }) {
   const section = tutorial.sections[index]
   if (!section) return null
   return (
-    <Link href={`/tutorial/${tutorial.slug}/${index + 1}`} className={className}>
+    <Link href={sectionPath(tutorial.slug, index)} className={className}>
       <span>{label}</span>
       {section.number} {section.title}
     </Link>

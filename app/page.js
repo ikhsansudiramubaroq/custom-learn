@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { getPortfolio } from '@/lib/content'
 import { profile } from '@/lib/profile'
+import { sectionPath } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
+export const metadata = { alternates: { canonical: '/' } }
 
 export default async function PortfolioPage() {
   const projects = await getPortfolio()
@@ -40,7 +42,7 @@ export default async function PortfolioPage() {
               <tr key={project.slug}>
                 <td className="log-number">{String(projects.length - index).padStart(2, '0')}</td>
                 <td>
-                  <Link href={`/tutorial/${project.slug}`}>{project.title}</Link>
+                  <Link href={sectionPath(project.slug, 0)}>{project.title}</Link>
                   {project.outcome && <p>{project.outcome}</p>}
                 </td>
                 <td className="log-meta">{project.tools}</td>

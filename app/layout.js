@@ -1,14 +1,18 @@
 import { IBM_Plex_Mono, Source_Serif_4 } from 'next/font/google'
 import Link from 'next/link'
 import { profile } from '@/lib/profile'
+import { siteUrl } from '@/lib/site'
 import './globals.css'
 
 const serif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif' })
 const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '600'], variable: '--font-mono' })
 
-export const metadata = {
-  title: { default: `${profile.name}: catatan kerja`, template: `%s · ${profile.name}` },
-  description: profile.bio,
+export async function generateMetadata() {
+  return {
+    metadataBase: new URL(await siteUrl()),
+    title: { default: `${profile.name}: catatan kerja`, template: `%s · ${profile.name}` },
+    description: profile.bio,
+  }
 }
 
 export default function RootLayout({ children }) {

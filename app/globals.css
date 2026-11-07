@@ -11,6 +11,10 @@
   box-sizing: border-box;
 }
 
+html {
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background: var(--paper);
@@ -175,6 +179,13 @@ h1 {
   user-select: none;
 }
 
+/* Di layar sentuh, geser vertikal tetap menggulir halaman, bukan menggambar kotak. */
+@media (pointer: coarse) {
+  .mark-stage {
+    touch-action: pan-y;
+  }
+}
+
 .mark-hint {
   margin: 0.25rem 0 0;
 }
@@ -269,6 +280,155 @@ code {
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 0.15em;
+}
+
+/* Tujuan dari hasil pencarian */
+[id^='b-']:target {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+  scroll-margin-top: 1.5rem;
+}
+
+/* Pencarian */
+
+.search-form {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.search-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0 0.625rem;
+  border: 1px solid var(--ink);
+  border-right: 0;
+  border-radius: 0;
+  background: #fbf9f4;
+  color: var(--ink);
+  font-family: var(--sans-mono);
+  font-size: 1rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-form input::placeholder {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.search-form button {
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans-mono);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.search-mobile {
+  display: none;
+}
+
+.search-count {
+  margin: 0.75rem 0 2rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.result-group {
+  padding: 1.25rem 0 0.5rem;
+  border-top: 1px solid var(--ink);
+}
+
+.result-group h2 {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.result-group h2 a, .result-section h3 a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+}
+
+.result-section {
+  margin-top: 1.25rem;
+}
+
+.result-section h3 {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  gap: 0 0.5rem;
+  margin: 0;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.result-total {
+  color: var(--muted);
+  font-family: var(--sans-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.results a {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 0 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.results a:hover {
+  background: #ebe5d8;
+}
+
+.result-kind {
+  color: var(--muted);
+  font-family: var(--sans-mono);
+  font-size: 0.75rem;
+  line-height: 1.45rem;
+}
+
+.result-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.result-mono {
+  font-family: var(--sans-mono);
+  font-size: 0.875rem;
+}
+
+mark {
+  background: #f0d48c;
+  color: var(--ink);
 }
 
 /* Daftar isi */
@@ -432,6 +592,24 @@ code {
 
   .toc-desktop {
     display: none;
+  }
+
+  .search-mobile {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .search-mobile .search-form {
+    margin: 0;
+  }
+
+  .results a {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .result-section h3 {
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
   }
 
   .toc-mobile {

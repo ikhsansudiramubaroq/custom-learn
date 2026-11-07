@@ -3,17 +3,19 @@ import CopyButton from './CopyButton'
 
 export default function Block({ block }) {
   const { type, content, label } = block
+  const id = `b-${block.id}`
 
-  if (type === 'text') return <p className="block-text">{content}</p>
+  if (type === 'text') return <p id={id} className="block-text">{content}</p>
 
   if (type === 'image') {
     return (
-      <figure className="block-image">
+      <figure id={id} className="block-image">
         <div className="marked-image">
           <img
             src={`/uploads/${content}`}
             alt={`${label || 'Screenshot langkah ini'}${block.marks.length ? ', dengan bagian penting ditandai kotak merah' : ''}`}
             loading="lazy"
+            decoding="async"
           />
           {block.marks.map((box) => <span key={box.join()} className="mark" style={markStyle(box)} />)}
         </div>
@@ -24,14 +26,14 @@ export default function Block({ block }) {
 
   if (type === 'link') {
     return (
-      <p className="block-link">
+      <p id={id} className="block-link">
         <a href={content} target="_blank" rel="noopener noreferrer">{label || content}</a>
       </p>
     )
   }
 
   return (
-    <div className={`block-${type}`}>
+    <div id={id} className={`block-${type}`}>
       <div className="block-bar">
         <span>{type === 'command' ? 'terminal' : label || 'kode'}</span>
         <CopyButton text={content} />

@@ -36,6 +36,20 @@ Portfolio dan Tutorial ada di web yang sama dan saling tertaut lewat navigasi at
 
 Contoh alur satu tutorial: instalasi Proxmox, membuat VM Ubuntu Server, sampai web server sederhana berjalan.
 
+## Pencarian
+
+- Kotak cari ada di atas sidebar. Hasilnya di `/cari?q=kata`, tanpa JavaScript di browser.
+- Yang dicari: judul tutorial, sub judul, teks, command, dan code. Hanya tutorial `published`.
+- Setiap baris yang cocok menjadi satu hasil, dikelompokkan per tutorial dan sub judul, dengan kata yang cocok disorot.
+- Klik hasil membuka sub judulnya dan menandai blok yang cocok.
+
+## SEO
+
+- Setiap sub judul punya judul, deskripsi, canonical, dan Open Graph sendiri. Deskripsi diambil dari ringkasan atau teks pertama.
+- `/sitemap.xml` dan `/robots.txt` dibuat otomatis. Tutorial baru langsung masuk, draft tidak.
+- `/cari` dan Studio tidak diindeks.
+- JSON-LD tidak dipakai, karena cara resminya butuh `dangerouslySetInnerHTML`.
+
 ## Portfolio
 
 Isinya tidak diketik ulang. Portfolio mengambil tutorial yang sudah ada.
@@ -94,4 +108,4 @@ Logika penting dites dengan `node --test`.
 
 ## Di luar lingkup
 
-Jangan dibuat kecuali diminta: multi user, akun pengunjung, komentar, like, editor WYSIWYG, Markdown, tag, pencarian, dark mode, API publik, syntax highlighting, drag and drop, TypeScript, Tailwind, library UI, ORM.
+Jangan dibuat kecuali diminta: multi user, akun pengunjung, komentar, like, editor WYSIWYG, Markdown, tag, dark mode, API publik, syntax highlighting, drag and drop, TypeScript, Tailwind, library UI, ORM.
