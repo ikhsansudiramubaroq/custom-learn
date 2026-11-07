@@ -337,10 +337,6 @@ code {
   border-color: var(--accent);
 }
 
-.search-mobile {
-  display: none;
-}
-
 .search-count {
   margin: 0.75rem 0 2rem;
   color: var(--muted);
@@ -436,13 +432,8 @@ mark {
 
 /* Daftar isi */
 
-.toc {
-  font-size: 1rem;
-  line-height: 1.35;
-}
-
 /* Pas dengan tinggi layar: kotak cari tetap di atas, hanya daftarnya yang digulir. */
-.toc-desktop {
+.toc {
   position: sticky;
   top: var(--header-height);
   display: flex;
@@ -450,11 +441,17 @@ mark {
   height: calc(100dvh - var(--header-height));
   padding: 1.5rem 1.5rem 0;
   border-right: 1px solid var(--rule);
+  font-size: 1rem;
+  line-height: 1.35;
 }
 
-.toc-desktop .search-form {
+.toc .search-form {
   flex: none;
   margin-bottom: 1rem;
+}
+
+.toc-toggle, .toc-label {
+  display: none;
 }
 
 /* Margin negatif memberi ruang untuk background item aktif yang melebar 0.5rem. */
@@ -479,10 +476,6 @@ mark {
     padding-block: 0;
     background: var(--paper);
   }
-}
-
-.toc-mobile {
-  display: none;
 }
 
 .toc h2 {
@@ -623,20 +616,6 @@ mark {
     display: block;
   }
 
-  .toc-desktop {
-    display: none;
-  }
-
-  .search-mobile {
-    display: block;
-    padding: 0.75rem 1.25rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .search-mobile .search-form {
-    margin: 0;
-  }
-
   .results a {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -645,13 +624,28 @@ mark {
     grid-template-columns: 2.75rem minmax(0, 1fr) auto;
   }
 
-  .toc-mobile {
+  .toc {
+    position: static;
     display: block;
-    padding: 0 1.25rem;
+    height: auto;
+    padding: 0.75rem 1.25rem 0;
+    border-right: 0;
     border-bottom: 1px solid var(--rule);
   }
 
-  .toc-mobile summary {
+  .toc .search-form {
+    margin: 0;
+  }
+
+  .toc-toggle {
+    position: absolute;
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .toc-label {
+    display: block;
     min-height: 2.75rem;
     padding: 0.625rem 0;
     font-family: var(--sans-mono);
@@ -659,13 +653,28 @@ mark {
     cursor: pointer;
   }
 
-  .toc-mobile[open] {
-    padding-bottom: 1rem;
+  .toc-label::before {
+    content: '▸ ';
   }
 
-  .toc-mobile .toc-scroll {
+  .toc-toggle:checked + .toc-label::before {
+    content: '▾ ';
+  }
+
+  .toc-toggle:focus-visible + .toc-label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .toc-scroll {
+    display: none;
     max-height: 60dvh;
+    margin-bottom: 1rem;
     padding-bottom: 0;
+  }
+
+  .toc-toggle:checked ~ .toc-scroll {
+    display: block;
   }
 
   .toc a {

@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { blockContent, categoryId, field, required } from '@/lib/form'
+import { forgetContent } from '@/lib/memo'
 import { isAdmin, isSameOrigin } from '@/lib/session'
 
 function fail(status, error) {
@@ -65,5 +66,6 @@ export async function POST(request) {
     console.error('Simpan otomatis gagal:', error)
     return fail(400, 'Gagal menyimpan, periksa isian lalu coba lagi.')
   }
+  forgetContent()
   return new Response(null, { status: 204 })
 }

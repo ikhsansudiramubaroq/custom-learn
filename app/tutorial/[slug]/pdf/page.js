@@ -23,7 +23,7 @@ export default async function TutorialPdfPage({ params }) {
   return (
     <main className="pdf">
       <div className="pdf-bar">
-        <Link href={sectionPath(tutorial.slug, 0)}>← Kembali ke tutorial</Link>
+        <Link prefetch={false} href={sectionPath(tutorial.slug, 0)}>← Kembali ke tutorial</Link>
         <PrintButton />
       </div>
       <p className="pdf-hint">Pada jendela cetak, pilih tujuan “Simpan sebagai PDF”.</p>

@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { db } from '@/lib/db'
+import { forgetContent } from '@/lib/memo'
 import { isAdmin, isSameOrigin, setFlash } from '@/lib/session'
 import { UPLOAD_DIR, removeImages } from '@/lib/uploads'
 import { MAX_IMAGE_BYTES, detectImageType } from '@/lib/validate'
@@ -38,6 +39,7 @@ export async function POST(request) {
     await removeImages([name])
     return fail(400, 'Sub judul tidak ditemukan.')
   }
+  forgetContent()
   await setFlash('Foto ditambahkan')
   return Response.json({ name })
 }

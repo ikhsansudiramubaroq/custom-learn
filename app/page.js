@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import JsonLd from '@/components/JsonLd'
 import { getPortfolio } from '@/lib/content'
+import { imageProps } from '@/lib/image'
 import { profile } from '@/lib/profile'
 import { homeSchema, sectionPath } from '@/lib/seo'
 import { siteUrl } from '@/lib/site'
@@ -56,21 +57,21 @@ export default async function PortfolioPage() {
               <tr key={project.slug}>
                 <td className="log-number">{String(index + 1).padStart(2, '0')}</td>
                 <td>
-                  <Link href={sectionPath(project.slug, 0)}>{project.title}</Link>
+                  <Link prefetch={false} href={sectionPath(project.slug, 0)}>{project.title}</Link>
                   {project.outcome && <p>{project.outcome}</p>}
-                  <Link href={`/tutorial/${project.slug}/pdf`} prefetch={false} className="log-pdf">Lihat PDF</Link>
+                  <Link prefetch={false} href={`/tutorial/${project.slug}/pdf`} className="log-pdf">Lihat PDF</Link>
                 </td>
                 <td className="log-meta">{project.tools}</td>
                 <td className="log-meta">{project.finished_on?.slice(0, 7)}</td>
                 <td>
-                  {project.image && <img src={`/uploads/${project.image}`} alt="" loading="lazy" />}
+                  {project.image && <img {...imageProps(project.image, 352, 220)} alt="" loading="lazy" />}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-      <p className="log-more"><Link href="/tutorial">Semua tutorial</Link></p>
+      <p className="log-more"><Link prefetch={false} href="/tutorial">Semua tutorial</Link></p>
     </main>
   )
 }

@@ -22,10 +22,10 @@ export default function RootLayout({ children }) {
     <html lang="id" className={`${serif.variable} ${mono.variable}`}>
       <body>
         <header className="site-header">
-          <Link href="/" className="site-name">{profile.name}</Link>
+          <Link prefetch={false} href="/" className="site-name">{profile.name}</Link>
           <nav aria-label="Utama">
-            <Link href="/">Portfolio</Link>
-            <Link href="/tutorial">Tutorial</Link>
+            <Link prefetch={false} href="/">Portfolio</Link>
+            <Link prefetch={false} href="/tutorial">Tutorial</Link>
           </nav>
         </header>
         {children}

@@ -15,7 +15,7 @@ Satu aplikasi Next.js. Next.js berjalan di atas Node.js dan memakai React, jadi 
 | Login | `node:crypto` | `scrypt` untuk password, HMAC untuk cookie sesi |
 | Tes | `node --test` | Bawaan Node.js |
 
-Dependency hanya `next`, `react`, `react-dom`, dan `mysql2`.
+Dependency hanya `next`, `react`, `react-dom`, dan `mysql2`. `sharp` untuk memperkecil foto sudah ikut bersama `next`.
 
 ## Struktur file
 
@@ -65,6 +65,8 @@ custom-learn/
 │   ├── form.js                    membaca dan memeriksa isian form
 │   ├── uploads.js                 folder foto dan hapus file
 │   ├── content.js                 query tutorial, pencarian, portfolio
+│   ├── memo.js                    isi publik di memori sampai ada perubahan
+│   ├── image.js                   salinan foto sesuai lebar layar
 │   ├── search.js                  logika hasil pencarian
 │   ├── seo.js                     URL, judul, dan deskripsi halaman
 │   ├── site.js                    alamat situs
@@ -77,6 +79,7 @@ custom-learn/
 ├── .env.local                     rahasia, tidak ikut git
 ├── .gitignore
 ├── .htaccess                      Require all denied
+├── next.config.mjs                ukuran foto dan header keamanan
 └── package.json
 ```
 
@@ -143,9 +146,11 @@ CREATE TABLE blocks (
 - **Halaman publik memakai `export const dynamic = 'force-dynamic'`.** Tanpa ini, Next.js bisa merender halaman saat build, sehingga butuh database saat build dan tutorial baru tidak muncul.
 - **Hash password memakai format `salt:hash` dalam hex,** karena `.env.local` memperlakukan `$` sebagai variabel.
 - **Tanda `$` pada blok command dibuat dengan CSS,** jadi tidak ikut tersalin.
-- **`<img>` biasa,** dengan `loading="lazy"`. `shortcut: screenshot besar dimuat apa adanya, pakai next/image jika halaman terasa lambat`.
+- **`<img>` biasa dengan `srcSet` dari `getImageProps`,** bukan komponen `next/image`, karena ukuran asli foto tidak disimpan dan komponen itu memaksa tinggi tertentu. Hasilnya WEBP sesuai lebar layar, tersimpan di `.next/cache/images`.
+- **Isi publik disimpan di memori proses,** bukan `unstable_cache` yang sudah digantikan di Next.js 16. `forgetContent()` membersihkannya setiap ada penulisan. `shortcut: perubahan langsung di database butuh restart aplikasi, dan hanya berlaku untuk satu proses`.
+- **`compress: false`.** Cloudflare sudah mengompres, jadi CPU server tidak bekerja dua kali. Di localhost file terlihat lebih besar, dan itu wajar.
 - **Batas login disimpan di memori proses.** `shortcut: hilang saat restart dan tidak berbagi antar proses, simpan di database jika berjalan lebih dari satu proses`.
-- **JavaScript di halaman publik hanya untuk tombol salin dan menggulir daftar isi ke item aktif.** Selain itu Server Component, dan sidebar di HP memakai `<details>`.
+- **JavaScript di halaman publik untuk tombol salin, menggulir daftar isi, dan navigasi tanpa reload.** Halamannya Server Component, jadi tetap terbaca tanpa JavaScript. Sidebar di HP dilipat dengan checkbox, supaya isinya tidak ditulis dua kali.
 
 ## Menjalankan
 

@@ -49,7 +49,7 @@ function PagerLink({ tutorial, index, label, className }) {
   const section = tutorial.sections[index]
   if (!section) return null
   return (
-    <Link href={sectionPath(tutorial.slug, index)} className={className}>
+    <Link prefetch={false} href={sectionPath(tutorial.slug, index)} className={className}>
       <span>{label}</span>
       {section.number} {section.title}
     </Link>

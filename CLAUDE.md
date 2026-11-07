@@ -38,7 +38,7 @@ Contoh alur satu tutorial: instalasi Proxmox, membuat VM Ubuntu Server, sampai w
 
 ## Pencarian
 
-- Kotak cari ada di atas sidebar. Hasilnya di `/cari?q=kata`, tanpa JavaScript di browser.
+- Kotak cari ada di atas sidebar. Hasilnya di `/cari?q=kata`, tanpa reload, dan tetap jalan tanpa JavaScript.
 - Yang dicari: judul tutorial, sub judul, teks, command, dan code. Hanya tutorial `published`.
 - Setiap baris yang cocok menjadi satu hasil, dikelompokkan per tutorial dan sub judul, dengan kata yang cocok disorot.
 - Klik hasil membuka sub judulnya dan menandai blok yang cocok.
@@ -96,7 +96,15 @@ Setiap sub judul punya satu kotak tulis di bagian bawah:
 - Link hanya menerima `http` dan `https`.
 - Draft tidak boleh bisa diakses publik, termasuk lewat URL langsung. Semua query publik wajib memfilter `published`.
 - Rahasia hanya di `.env.local`, tidak pernah memakai awalan `NEXT_PUBLIC_`.
-- Saat data dihapus, file foto terkait ikut dihapus setelah database berhasil.
+- Saat data dihapus, file foto terkait dan salinan kecilnya ikut dihapus setelah database berhasil.
+
+## Hemat beban server
+
+- Pindah halaman dan semua aksi berjalan tanpa reload.
+- Setiap penulisan di Studio wajib memanggil `forgetContent()` setelah database berhasil, supaya memori tidak menyajikan isi lama. Yang disimpan di memori hanya isi `published`.
+- Link publik memakai `prefetch={false}`, supaya melihat satu halaman tidak memicu belasan permintaan.
+- Foto publik memakai `imageProps()`. Hanya halaman PDF dan Studio yang memuat file asli.
+- Aplikasi berjalan satu proses. Jangan pakai mode cluster, karena memori dan batas login tidak dibagi antar proses.
 
 ## Urutan kerja
 

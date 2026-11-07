@@ -1,3 +1,4 @@
+import { imageProps } from '@/lib/image'
 import { markStyle } from '@/lib/validate'
 import CopyButton from './CopyButton'
 
@@ -12,7 +13,8 @@ export default function Block({ block, eager = false }) {
       <figure id={id} className="block-image">
         <div className="marked-image">
           <img
-            src={`/uploads/${content}`}
+            // Versi PDF memakai foto asli supaya tetap tajam saat dicetak.
+            {...(eager ? { src: `/uploads/${content}` } : imageProps(content, 1600, 900, '(max-width: 52rem) 100vw, 70vw'))}
             alt={`${label || 'Screenshot langkah ini'}${block.marks.length ? ', dengan bagian penting ditandai kotak merah' : ''}`}
             // Foto lazy belum termuat saat dicetak, jadi halaman PDF memuat semuanya.
             loading={eager ? 'eager' : 'lazy'}

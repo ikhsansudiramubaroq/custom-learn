@@ -1,13 +1,15 @@
+import Form from 'next/form'
 import Link from 'next/link'
 import TocScroll from '@/components/TocScroll'
 import { MAX_QUERY } from '@/lib/search'
 import { sectionPath } from '@/lib/seo'
 
-// Form biasa: halaman hasil tetap jalan tanpa JavaScript.
+// Pindah tanpa reload, dan tetap jalan sebagai form biasa kalau JavaScript mati.
 function SearchForm({ query }) {
   return (
-    <form action="/cari" role="search" className="search-form">
+    <Form action="/cari" prefetch={false} role="search" className="search-form">
       <input
+        key={query}
         type="search"
         name="q"
         defaultValue={query}
@@ -17,7 +19,7 @@ function SearchForm({ query }) {
         enterKeyHint="search"
       />
       <button type="submit">Cari</button>
-    </form>
+    </Form>
   )
 }
 
@@ -29,7 +31,7 @@ function Contents({ tutorials, active, activeSection }) {
         <ol>
           {items.map((tutorial) => (
             <li key={tutorial.id}>
-              <Link
+              <Link prefetch={false}
                 href={sectionPath(tutorial.slug, 0)}
                 aria-current={tutorial.id === active?.id ? 'true' : undefined}
               >
@@ -40,7 +42,7 @@ function Contents({ tutorials, active, activeSection }) {
                 <ol className="toc-sections">
                   {active.sections.map((section, index) => (
                     <li key={section.id}>
-                      <Link
+                      <Link prefetch={false}
                         href={sectionPath(active.slug, index)}
                         aria-current={section.id === activeSection?.id ? 'page' : undefined}
                       >
@@ -59,23 +61,16 @@ function Contents({ tutorials, active, activeSection }) {
   })
 }
 
-// Dua salinan: HP memakai <details> supaya bisa dilipat tanpa JavaScript, CSS menampilkan salah satunya.
+// Satu salinan untuk semua layar. Di HP daftarnya dilipat dengan checkbox, jadi tetap jalan tanpa JavaScript.
 export default function TutorialSidebar({ tutorials, active, activeSection, query = '' }) {
   return (
-    <>
-      <div className="search-mobile"><SearchForm query={query} /></div>
-      <details className="toc toc-mobile">
-        <summary>Daftar isi</summary>
-        <TocScroll activeId={activeSection?.id ?? active?.id}>
-          <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
-        </TocScroll>
-      </details>
-      <aside className="toc toc-desktop" aria-label="Daftar tutorial">
-        <SearchForm query={query} />
-        <TocScroll activeId={activeSection?.id ?? active?.id}>
-          <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
-        </TocScroll>
-      </aside>
-    </>
+    <aside className="toc" aria-label="Daftar tutorial">
+      <SearchForm query={query} />
+      <input type="checkbox" id="toc-toggle" className="toc-toggle" />
+      <label htmlFor="toc-toggle" className="toc-label">Daftar isi</label>
+      <TocScroll activeId={activeSection?.id ?? active?.id} toggleId="toc-toggle">
+        <Contents tutorials={tutorials} active={active} activeSection={activeSection} />
+      </TocScroll>
+    </aside>
   )
 }

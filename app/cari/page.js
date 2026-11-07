@@ -16,7 +16,7 @@ function Rows({ rows }) {
     <ol className="results">
       {rows.map((row) => (
         <li key={row.key}>
-          <Link href={row.href} prefetch={false}>
+          <Link prefetch={false} href={row.href}>
             <span className="result-kind">{row.kind}</span>
             <span className={row.mono ? 'result-text result-mono' : 'result-text'}>
               <Highlight parts={row.parts} />
@@ -55,14 +55,14 @@ export default async function SearchPage({ searchParams }) {
           <section key={tutorial.id} className="result-group">
             <h2>
               <span className="toc-number">{tutorial.number}</span>
-              <Link href={sectionPath(tutorial.slug, 0)}>{tutorial.title}</Link>
+              <Link prefetch={false} href={sectionPath(tutorial.slug, 0)}>{tutorial.title}</Link>
             </h2>
             {rows.length > 0 && <Rows rows={rows} />}
             {sections.map((section) => (
               <section key={section.id} className="result-section">
                 <h3>
                   <span className="toc-number">{section.number}</span>
-                  <Link href={section.path}>{section.title}</Link>
+                  <Link prefetch={false} href={section.path}>{section.title}</Link>
                   <span className="result-total">{section.rows.length} hasil</span>
                 </h3>
                 <Rows rows={section.rows} />

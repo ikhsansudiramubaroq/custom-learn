@@ -22,7 +22,7 @@ export default async function TutorialsPage() {
             <li key={tutorial.id}>
               <span className="toc-number">{tutorial.number}</span>
               <div>
-                <Link href={`/tutorial/${tutorial.slug}`}>{tutorial.title}</Link>
+                <Link prefetch={false} href={`/tutorial/${tutorial.slug}`}>{tutorial.title}</Link>
                 {tutorial.summary && <p>{tutorial.summary}</p>}
               </div>
             </li>

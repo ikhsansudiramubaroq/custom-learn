@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { db } from '@/lib/db'
 import { blockContent, categoryId, field, required } from '@/lib/form'
+import { forgetContent } from '@/lib/memo'
 import { logIn, logOut, requireAdmin, setFlash } from '@/lib/session'
 import { removeImages } from '@/lib/uploads'
 import { parseMarks, slugify } from '@/lib/validate'
@@ -30,6 +31,7 @@ async function move(table, scopeColumn, id, direction) {
 }
 
 async function refresh(message) {
+  forgetContent()
   await setFlash(message)
   revalidatePath('/studio', 'layout')
 }

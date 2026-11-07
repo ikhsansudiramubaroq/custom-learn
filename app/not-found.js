@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main className="doc doc-narrow">
       <h1>Halaman tidak ditemukan</h1>
-      <p><Link href="/tutorial">Kembali ke daftar tutorial</Link></p>
+      <p><Link prefetch={false} href="/tutorial">Kembali ke daftar tutorial</Link></p>
     </main>
   )
 }
