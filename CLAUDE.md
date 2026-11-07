@@ -78,6 +78,7 @@ Setiap sub judul punya satu kotak tulis di bagian bawah:
 - Tombol pilih file tetap ada untuk foto yang bukan dari clipboard.
 - Seret di foto untuk memberi kotak merah penanda, maksimal 20 kotak per foto. Tersimpan otomatis, dihapus dengan tombol ×. File foto asli tidak berubah. Pengunjung melihat kotaknya tanpa tombol ×.
 - Tutorial, sub judul, dan blok bisa diubah, dihapus, dan diurutkan.
+- Kategori dibuat sendiri di halaman Studio dan bisa diubah namanya serta diurutkan. Urutannya menentukan urutan di sidebar dan portfolio. Kategori yang masih dipakai tutorial tidak bisa dihapus.
 - Status tutorial: `draft` atau `published`. Draft tidak tampil di publik.
 - Tidak ada tombol Simpan. Isian tutorial, sub judul, dan blok tersimpan otomatis 0,8 detik setelah berhenti mengetik, saat pindah kolom, dan saat pindah halaman.
 - Bar di atas editor selalu terlihat dan menjadi satu-satunya tempat melihat status: tersimpan beserta jamnya, sedang menyimpan, isian wajib kosong, atau gagal dengan tombol Coba lagi. Selama ada yang belum tersimpan, browser memperingatkan sebelum tab ditutup.

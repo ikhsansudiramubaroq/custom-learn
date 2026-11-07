@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import TocScroll from '@/components/TocScroll'
-import { CATEGORY_LABELS } from '@/lib/content'
 import { MAX_QUERY } from '@/lib/search'
 import { sectionPath } from '@/lib/seo'
 
@@ -23,12 +22,10 @@ function SearchForm({ query }) {
 }
 
 function Contents({ tutorials, active, activeSection }) {
-  return Object.entries(CATEGORY_LABELS).map(([category, label]) => {
-    const items = tutorials.filter((tutorial) => tutorial.category === category)
-    if (!items.length) return null
+  return [...Map.groupBy(tutorials, (tutorial) => tutorial.category)].map(([category, items]) => {
     return (
       <section key={category}>
-        <h2>{label}</h2>
+        <h2>{category}</h2>
         <ol>
           {items.map((tutorial) => (
             <li key={tutorial.id}>

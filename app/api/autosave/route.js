@@ -1,16 +1,9 @@
-import { CATEGORY_LABELS } from '@/lib/content'
 import { db } from '@/lib/db'
-import { blockContent, field, required } from '@/lib/form'
+import { blockContent, categoryId, field, required } from '@/lib/form'
 import { isAdmin, isSameOrigin } from '@/lib/session'
 
 function fail(status, error) {
   return Response.json({ error }, { status })
-}
-
-function category(formData) {
-  const value = formData.get('category')
-  if (!Object.hasOwn(CATEGORY_LABELS, value)) throw new Error('Kategori tidak dikenal')
-  return value
 }
 
 // Slug tidak ikut berubah, supaya link yang sudah dibagikan tetap hidup.
@@ -19,12 +12,12 @@ async function saveTutorial(id, formData) {
   const finishedOn = field(formData, 'finished_on', 10)
   if (finishedOn && !/^\d{4}-\d{2}-\d{2}$/.test(finishedOn)) throw new Error('Tanggal tidak valid')
   await db.execute(
-    `UPDATE tutorials SET title = ?, summary = ?, category = ?, status = ?,
+    `UPDATE tutorials SET title = ?, summary = ?, category_id = ?, status = ?,
      in_portfolio = ?, outcome = ?, tools = ?, finished_on = ? WHERE id = ?`,
     [
       required(formData, 'title', 200),
       field(formData, 'summary', 500),
-      category(formData),
+      categoryId(formData),
       status,
       formData.get('in_portfolio') ? 1 : 0,
       field(formData, 'outcome', 300),
@@ -50,7 +43,11 @@ async function saveBlock(id, formData) {
   }
 }
 
-const SAVERS = { tutorial: saveTutorial, section: saveSection, block: saveBlock }
+async function saveCategory(id, formData) {
+  await db.execute('UPDATE categories SET name = ? WHERE id = ?', [required(formData, 'name', 60), id])
+}
+
+const SAVERS = { tutorial: saveTutorial, section: saveSection, block: saveBlock, category: saveCategory }
 
 export async function POST(request) {
   if (!(await isAdmin())) return fail(401, 'Sesi berakhir, login lagi di tab baru lalu coba lagi.')
@@ -64,6 +61,7 @@ export async function POST(request) {
   try {
     await SAVERS[kind](id, form)
   } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') return fail(409, 'Nama kategori itu sudah ada.')
     console.error('Simpan otomatis gagal:', error)
     return fail(400, 'Gagal menyimpan, periksa isian lalu coba lagi.')
   }

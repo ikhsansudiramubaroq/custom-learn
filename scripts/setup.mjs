@@ -23,6 +23,24 @@ const connection = await mysql.createConnection({ uri: url.href, multipleStateme
 await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`)
 await connection.query(`USE \`${database}\``)
 await connection.query(readFileSync('db/schema.sql', 'utf8'))
+
+// Database lama menyimpan kategori sebagai ENUM. Bisa diulang jika sempat berhenti di tengah.
+const [legacy] = await connection.query(
+  "SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'tutorials' AND COLUMN_NAME = 'category'",
+  [database],
+)
+if (legacy.length) {
+  await connection.query(`
+    INSERT IGNORE INTO categories (name, position) VALUES ('Linux', 0), ('Programming', 1);
+    ALTER TABLE tutorials ADD COLUMN IF NOT EXISTS category_id INT UNSIGNED NULL AFTER category;
+    UPDATE tutorials t JOIN categories c ON c.name = t.category SET t.category_id = c.id;
+    ALTER TABLE tutorials
+      MODIFY category_id INT UNSIGNED NOT NULL,
+      ADD FOREIGN KEY (category_id) REFERENCES categories(id),
+      DROP COLUMN category;
+  `)
+  console.log('Kategori lama dipindahkan ke tabel categories.')
+}
 await connection.end()
 console.log(`Database ${database} siap.`)
 

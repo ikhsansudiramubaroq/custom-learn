@@ -5,7 +5,7 @@ import Composer from '@/components/Composer'
 import ConfirmButton from '@/components/ConfirmButton'
 import MarkEditor from '@/components/MarkEditor'
 import SaveStatus from '@/components/SaveStatus'
-import { CATEGORY_LABELS, getTutorialForEdit } from '@/lib/content'
+import { getCategories, getTutorialForEdit } from '@/lib/content'
 import { requireAdmin } from '@/lib/session'
 import {
   addSection,
@@ -57,7 +57,7 @@ function BlockForm({ block }) {
 export default async function EditTutorialPage({ params }) {
   await requireAdmin()
   const { id } = await params
-  const tutorial = await getTutorialForEdit(id)
+  const [tutorial, categories] = await Promise.all([getTutorialForEdit(id), getCategories()])
   if (!tutorial) notFound()
 
   return (
@@ -85,8 +85,8 @@ export default async function EditTutorialPage({ params }) {
         <div className="row-form">
           <label>
             Kategori
-            <select name="category" defaultValue={tutorial.category}>
-              {Object.entries(CATEGORY_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+            <select name="category_id" defaultValue={tutorial.category_id}>
+              {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
             </select>
           </label>
           <label>

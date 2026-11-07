@@ -511,7 +511,7 @@ mark {
 
 .toc a {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
+  grid-template-columns: 3.25rem minmax(0, 1fr);
   margin-inline: -0.5rem;
   padding: 0.3rem 0.5rem;
   color: var(--ink);
@@ -819,8 +819,10 @@ mark {
 
 .studio-head {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.25rem 1.5rem;
   margin-bottom: 2rem;
 }
 
@@ -856,6 +858,8 @@ mark {
 
 .save-status {
   display: flex;
+  font-family: var(--sans-mono);
+  font-size: 0.8125rem;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem 0.75rem;
@@ -896,6 +900,22 @@ mark {
 
 .studio-list a {
   flex: 1 1 16rem;
+}
+
+.studio h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+.category-row {
+  flex: 1;
+  align-items: center;
+}
+
+.studio .category-row input {
+  flex: 1 1 12rem;
+  width: auto;
+  margin: 0;
 }
 
 .meta {

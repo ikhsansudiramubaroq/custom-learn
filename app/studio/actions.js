@@ -2,21 +2,14 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { CATEGORY_LABELS } from '@/lib/content'
 import { db } from '@/lib/db'
-import { blockContent, field, required } from '@/lib/form'
+import { blockContent, categoryId, field, required } from '@/lib/form'
 import { logIn, logOut, requireAdmin, setFlash } from '@/lib/session'
 import { removeImages } from '@/lib/uploads'
 import { parseMarks, slugify } from '@/lib/validate'
 
 // Setiap fungsi yang diekspor di sini bisa dipanggil langsung lewat HTTP,
 // jadi semuanya wajib memanggil requireAdmin() lebih dulu.
-
-function category(formData) {
-  const value = formData.get('category')
-  if (!Object.hasOwn(CATEGORY_LABELS, value)) throw new Error('Kategori tidak dikenal')
-  return value
-}
 
 async function nextPosition(table, column, value) {
   const [[row]] = await db.execute(`SELECT COALESCE(MAX(position), -1) + 1 AS next FROM ${table} WHERE ${column} = ?`, [value])
@@ -54,7 +47,7 @@ export async function logout() {
 export async function createTutorial(formData) {
   await requireAdmin()
   const title = required(formData, 'title', 200)
-  const chosen = category(formData)
+  const chosen = categoryId(formData)
 
   const base = slugify(title)
   const [taken] = await db.execute('SELECT slug FROM tutorials WHERE slug = ? OR slug LIKE ?', [base, `${base}-%`])
@@ -63,8 +56,8 @@ export async function createTutorial(formData) {
   for (let n = 2; slugs.has(slug); n += 1) slug = `${base}-${n}`
 
   const [result] = await db.execute(
-    'INSERT INTO tutorials (slug, title, category, position) VALUES (?, ?, ?, ?)',
-    [slug, title, chosen, await nextPosition('tutorials', 'category', chosen)],
+    'INSERT INTO tutorials (slug, title, category_id, position) VALUES (?, ?, ?, ?)',
+    [slug, title, chosen, await nextPosition('tutorials', 'category_id', chosen)],
   )
   await setFlash('Tutorial dibuat')
   redirect(`/studio/${result.insertId}`)
@@ -85,7 +78,29 @@ export async function deleteTutorial(id) {
 
 export async function moveTutorial(id, direction) {
   await requireAdmin()
-  await move('tutorials', 'category', id, direction)
+  await move('tutorials', 'category_id', id, direction)
+}
+
+export async function addCategory(formData) {
+  await requireAdmin()
+  const name = required(formData, 'name', 60)
+  const [[row]] = await db.execute('SELECT COALESCE(MAX(position), -1) + 1 AS next FROM categories')
+  const [result] = await db.execute('INSERT IGNORE INTO categories (name, position) VALUES (?, ?)', [name, row.next])
+  await refresh(result.affectedRows ? 'Kategori ditambahkan' : 'Kategori itu sudah ada')
+}
+
+export async function deleteCategory(id) {
+  await requireAdmin()
+  const [[row]] = await db.execute('SELECT COUNT(*) AS used FROM tutorials WHERE category_id = ?', [id])
+  if (row.used) return refresh('Kategori masih dipakai')
+  await db.execute('DELETE FROM categories WHERE id = ?', [id])
+  await refresh('Kategori dihapus')
+}
+
+export async function moveCategory(id, direction) {
+  await requireAdmin()
+  // Semua kategori satu kelompok, jadi kolom kelompoknya cukup nilai tetap.
+  await move('categories', '1', id, direction)
 }
 
 export async function addSection(tutorialId, formData) {

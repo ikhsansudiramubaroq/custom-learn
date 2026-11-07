@@ -85,18 +85,25 @@ custom-learn/
 ## Skema data
 
 ```sql
+CREATE TABLE categories (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(60) NOT NULL UNIQUE,
+  position INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE tutorials (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   slug VARCHAR(120) NOT NULL UNIQUE,
   title VARCHAR(200) NOT NULL,
   summary VARCHAR(500) NOT NULL DEFAULT '',
-  category ENUM('linux', 'programming') NOT NULL,
+  category_id INT UNSIGNED NOT NULL,
   status ENUM('draft', 'published') NOT NULL DEFAULT 'draft',
   position INT NOT NULL DEFAULT 0,
   in_portfolio TINYINT(1) NOT NULL DEFAULT 0,
   outcome VARCHAR(300) NOT NULL DEFAULT '',  -- hasil akhir
   tools VARCHAR(200) NOT NULL DEFAULT '',    -- contoh: Proxmox, Ubuntu, Apache
-  finished_on DATE NULL
+  finished_on DATE NULL,
+  FOREIGN KEY (category_id) REFERENCES categories(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE sections (
@@ -120,6 +127,8 @@ CREATE TABLE blocks (
 ```
 
 - Satu tabel `tutorials` melayani Tutorial dan Portfolio, jadi tidak ada data ganda.
+- Kategori tabel sendiri, bukan teks di tutorial, jadi ganti nama cukup di satu tempat. Foreign key menolak penghapusan kategori yang masih dipakai, walau tombolnya sudah disembunyikan.
+- `scripts/setup.mjs` memindahkan database lama yang masih memakai kolom ENUM `category`, jadi cukup dijalankan ulang setelah `git pull`.
 - Nomor 1.1, 1.2 dihitung dari urutan saat ditampilkan, jadi tetap benar setelah sub judul dipindah.
 - Tidak ada kolom sampul. Portfolio memakai foto pertama di tutorial.
 - Kotak merah disimpan sebagai JSON `[[kiri, atas, lebar, tinggi]]` dalam persen, jadi posisinya mengikuti ukuran layar dan file foto tidak berubah. Foto kecil di portfolio tidak menampilkan kotak, karena gambarnya dipotong.
